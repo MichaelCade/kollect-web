@@ -1,0 +1,9 @@
+{
+  "tag_name": "0.0.6",
+  "name": "0.0.6",
+  "body": "- Added HashiCorp Vault prototype (needs more functional testing from both CLI and Browser) \r\n- Fixed Azure Snapshots bug \r\n- Removed multi region snapshot collection, not needed and slowed things down. \r\n- Added Cost functionality and additional chart visuals as well as additional detail on summary tabs \r\n- Fixed release.yaml for Windows binaries and added .exe \r\n- Cost APIs tested and updated \r\n- Moved Buttons in order of relevance, Kubernetes > Public Clouds > Terraform, Vault > Docker (not implemented) > Veeam ",
+  "prerelease": false,
+  "draft": false,
+  "published_at": "2025-05-20T11:05:41Z",
+  "repository": "MichaelCade/kollect"
+}

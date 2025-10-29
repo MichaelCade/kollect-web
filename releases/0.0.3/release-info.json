@@ -1,0 +1,9 @@
+{
+  "tag_name": "0.0.3",
+  "name": "0.0.3",
+  "body": "## Recent Improvements\r\n\r\n### UI and User Experience\r\n- **Enhanced Loading Indicators**: Added visual feedback during cloud platform connections and data loading operations\r\n- **Improved Error Handling**: Better error messages for connection issues, particularly for Azure subscription access problems\r\n- **Consistent Visual Cues**: Loading spinners now display for all cloud platform operations\r\n\r\n### Platform Integration Enhancements\r\n- **Azure Integration Fixes**: \r\n  - Improved subscription detection and display\r\n  - Added resilience for permission-related issues\r\n  - Prevent application crashes when encountering access denied errors\r\n  - Better error messages for subscription query failures\r\n\r\n### Backend Improvements\r\n- **Error Handling**: Gracefully handle authorization failures instead of crashing\r\n- **Logging Improvements**: More detailed logs for troubleshooting API connections\r\n- **Stability**: Enhanced error recovery for API requests to various cloud platforms\r\n\r\n### Technical Details\r\n- Added a mutation observer to automatically enhance dynamically created UI elements\r\n- Updated loading indicator z-index to ensure visibility above modals\r\n- Fixed Azure API error handling to continue collecting accessible resources when permission errors occur",
+  "prerelease": false,
+  "draft": false,
+  "published_at": "2025-05-14T16:54:44Z",
+  "repository": "MichaelCade/kollect"
+}

@@ -1,0 +1,9 @@
+{
+  "tag_name": "0.0.2",
+  "name": "0.0.2",
+  "body": "In this release we added the ability to: \r\n\r\n- Inventory your Google Cloud Resources.\r\n- Visualise Veeam inventory using charts.\r\n- Capture & Display KubeVirt based VMs, Storage etc",
+  "prerelease": false,
+  "draft": false,
+  "published_at": "2025-05-13T16:23:07Z",
+  "repository": "MichaelCade/kollect"
+}

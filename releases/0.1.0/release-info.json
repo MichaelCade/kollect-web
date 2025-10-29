@@ -1,0 +1,9 @@
+{
+  "tag_name": "0.1.0",
+  "name": "0.1.0",
+  "body": "# vSphere Integration & Enhanced Infrastructure Coverage\r\n\r\n### **🔥 Major Feature: VMware vSphere Integration**\r\nKollect now provides comprehensive VMware vSphere support with enterprise-grade capabilities:\r\n\r\n- **📊 Performance Monitoring**: Live CPU and Memory metrics from vSphere QuickStats API\r\n- **🏢 Complete Infrastructure Inventory**: VMs, ESXi hosts, datastores, clusters, networks, and resource pools\r\n- **🔍 Advanced Diagnostics**: Host status tooltips with detailed troubleshooting guidance\r\n- **⚡ Performance Analysis**: Resource efficiency scoring (Oversized/Undersized/Efficient)\r\n- **🔒 Enterprise Security**: SSL certificate validation with insecure connection support\r\n\r\n### **🛠️ Enhanced Command Line Experience**\r\n- **New `--inventory vsphere`** - Dedicated vSphere collection mode\r\n- **Environment Variable Support** - `VSPHERE_SERVER`, `VSPHERE_USERNAME`, `VSPHERE_PASSWORD`, `VSPHERE_INSECURE`\r\n- **Interactive Credential Prompts** - Streamlined setup process\r\n- **Auto-Discovery in `--inventory all`** - Seamless multi-platform collection\r\n\r\n### **🎨 UI/UX Enhancements**\r\n- **Red Hat OpenShift Button**: Coming soon modal with planned feature preview\r\n- **vSphere Connection Modal**: Real-time connection testing and validation\r\n- **Performance Metrics Display**: Live performance data visualization\r\n- **Status Indicators**: Visual connection health for all platforms\r\n## 🔮 **Coming Soon**\r\n- **Red Hat OpenShift Integration**: Comprehensive cluster inventory and management\r\n- **Platform Mapper**: Visual infrastructure dependency mapping\r\n- **Enhanced Performance Analytics**: Historical trending and capacity planning\r\n",
+  "prerelease": false,
+  "draft": false,
+  "published_at": "2025-10-23T16:30:57Z",
+  "repository": "MichaelCade/kollect"
+}
