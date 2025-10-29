@@ -13,7 +13,7 @@
         <nav class="nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <i class="fas fa-search-plus"></i>
+                    <img src="assets/Kollect.png" alt="Kollect" style="height: 32px; margin-right: 8px;">
                     <span>Kollect</span>
                 </div>
                 <ul class="nav-menu">
@@ -32,7 +32,7 @@
             <div class="container">
                 <div class="hero-content">
                     <h1>Multi-Cloud Infrastructure Discovery Made Simple</h1>
-                    <p class="hero-subtitle">Kollect automatically discovers and inventories your cloud infrastructure across AWS, Azure, GCP, VMware vSphere, Docker, Kubernetes, and more.</p>
+                    <p class="hero-subtitle">Born from Kubernetes discovery, Kollect now automatically inventories your entire infrastructure across cloud platforms, containers, virtual environments, and DevOps tooling.</p>
                     <div class="hero-actions">
                         <a href="#download" class="btn btn-primary">
                             <i class="fas fa-download"></i>
@@ -54,10 +54,11 @@
                             </div>
                         </div>
                         <div class="cloud-icons">
-                            <i class="fab fa-aws"></i>
-                            <i class="fab fa-microsoft"></i>
-                            <i class="fab fa-google"></i>
-                            <i class="fab fa-docker"></i>
+                            <i class="fas fa-dharmachakra" title="Kubernetes"></i>
+                            <i class="fab fa-aws" title="AWS"></i>
+                            <i class="fab fa-microsoft" title="Azure"></i>
+                            <i class="fab fa-google" title="Google Cloud"></i>
+                            <i class="fab fa-docker" title="Docker"></i>
                         </div>
                     </div>
                 </div>
@@ -71,38 +72,24 @@
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fab fa-aws"></i>
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                <i class="fab fa-aws" style="color: #FF9900;"></i>
+                                <i class="fab fa-microsoft" style="color: #00BCF2;"></i>
+                                <i class="fab fa-google" style="color: #4285F4;"></i>
+                            </div>
                         </div>
-                        <h3>AWS Discovery</h3>
-                        <p>EC2 instances, S3 buckets, RDS databases, DynamoDB tables, VPCs, and EFS file systems</p>
+                        <h3>Cloud Discovery</h3>
+                        <p>AWS EC2, S3, RDS, DynamoDB • Azure VMs, Storage, Networks • GCP Compute, Storage, Cloud SQL</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fab fa-microsoft"></i>
-                        </div>
-                        <h3>Azure Resources</h3>
-                        <p>Virtual machines, storage accounts, blob containers, virtual networks, and resource groups</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fab fa-google"></i>
-                        </div>
-                        <h3>Google Cloud</h3>
-                        <p>Compute instances, Cloud Storage buckets, Cloud SQL, and Cloud Functions</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <h3>VMware vSphere</h3>
-                        <p>Virtual machines, datastores, clusters, and resource pools across your vCenter infrastructure</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fab fa-docker"></i>
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                <i class="fas fa-dharmachakra" style="color: #326CE5;"></i>
+                                <i class="fab fa-docker" style="color: #2496ED;"></i>
+                            </div>
                         </div>
                         <h3>Container Platforms</h3>
-                        <p>Docker containers, images, volumes, and Kubernetes clusters with detailed resource information</p>
+                        <p>Kubernetes clusters, pods, services, deployments • Docker containers, images, volumes, networks</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -110,6 +97,30 @@
                         </div>
                         <h3>Cost Analysis</h3>
                         <p>Multi-cloud cost tracking and resource utilization analysis to optimize your spending</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Snapshot Hunter</h3>
+                        <p>Discover and analyze snapshots across cloud platforms to identify orphaned backups and reduce costs</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-server" style="color: #607078;"></i>
+                        </div>
+                        <h3>Virtual Environments</h3>
+                        <p>VMware vSphere virtual machines, datastores, clusters, and resource pools across vCenter infrastructure</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                <i class="fas fa-lock" style="color: #000;"></i>
+                                <i class="fas fa-cube" style="color: #7B42BC;"></i>
+                            </div>
+                        </div>
+                        <h3>DevOps Tooling</h3>
+                        <p>HashiCorp Vault secrets and policies • Terraform infrastructure state and resource inventory</p>
                     </div>
                 </div>
             </div>
@@ -209,7 +220,7 @@ chmod +x kollect
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <i class="fas fa-search-plus"></i>
+                    <img src="assets/Kollect.png" alt="Kollect" style="height: 24px; margin-right: 8px;">
                     <span>Kollect</span>
                 </div>
                 <div class="footer-links">
