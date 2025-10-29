@@ -203,19 +203,20 @@ body {
 
 .cloud-icons {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
     text-align: center;
 }
 
 .cloud-icons i {
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: var(--text-light);
-    transition: color 0.3s;
+    transition: color 0.3s, transform 0.3s;
 }
 
 .cloud-icons i:hover {
     color: var(--primary-color);
+    transform: scale(1.1);
 }
 
 /* Features Section */
