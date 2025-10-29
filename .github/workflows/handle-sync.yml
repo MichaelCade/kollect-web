@@ -1,0 +1,18 @@
+name: Handle Release Sync
+
+on:
+  repository_dispatch:
+    types: [sync-release]
+  workflow_dispatch:
+
+jobs:
+  log-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Sync Event
+        run: |
+          echo "Received sync-release event"
+          echo "Release tag: ${{ github.event.client_payload.release_tag }}"
+          echo "Release name: ${{ github.event.client_payload.release_name }}"
+          echo "Source repo: ${{ github.event.client_payload.source_repo }}"
+          echo "The actual sync will be handled by the private repository workflow."
