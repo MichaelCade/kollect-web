@@ -1,0 +1,9 @@
+{
+  "tag_name": "0.0.8",
+  "name": "0.0.8",
+  "body": "MCP (Model Context Protocol) Integration\r\n\r\nThis release introduces native MCP server support, enabling AI assistants to directly query and analyze your multi-cloud infrastructure inventory through a standardized protocol.\r\n\r\nNew Features\r\n- MCP Server Mode: New --mcp flag enables kollect to run as an MCP server\r\n- AI Assistant Integration: Direct integration with Claude, VS Code Copilot, and other MCP-compatible AI tools\r\n- Real-time Inventory Queries: AI assistants can now query live infrastructure data across AWS, Azure, GCP, and Kubernetes\r\n- Enhanced Workflow: Seamless infrastructure analysis and cost optimization through natural language queries\r\nUsage\r\n\r\n`kollect --inventory all --mcp`\r\n\r\nConfigure in your MCP client (e.g., VS Code settings) to enable AI-powered infrastructure insights and automated analysis of your cloud resources, costs, and compliance status.",
+  "prerelease": false,
+  "draft": false,
+  "published_at": "2025-10-21T14:26:48Z",
+  "repository": "MichaelCade/kollect"
+}

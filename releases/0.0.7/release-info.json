@@ -1,0 +1,9 @@
+{
+  "tag_name": "0.0.7",
+  "name": "0.0.7",
+  "body": "[✔️] Refactor the web server handler functions - growth with additional platforms and endpoints we should split into logical modules. https://github.com/MichaelCade/kollect/commit/e6a0d2a78f4bbc9354740a15b744ef5ce1cf7dae\r\n[✔️] Create a Configuration package - Break out the command line flags into a pkg/config/config.go along with environment variables. https://github.com/MichaelCade/kollect/commit/fa23d9607c430a4b62a9b56ea462d21375c75b30\r\n[✔️] Error Handling - Very minimum and debugging error handling at the moment. We should consider pkg/errors/errors.go we should consider a standard approach. https://github.com/MichaelCade/kollect/commit/ed295b8738f3ef7e79d4be4870ada4f70c61514a\r\n[✔️] Veeam Modal change error - Something I changed broke browser ability to hit the Veeam API and display the inventory, had to edit veeam.js. https://github.com/MichaelCade/kollect/commit/da74cc287687678a6f891576c37ce996de361dbc\r\n[✔️] API versioning - This is going to hurt when things get changed or start to break across the whole code base.\r\nAWS and Azure refactor - https://github.com/MichaelCade/kollect/commit/834fb54de44eadd7c251e4254a4799bb988bcd47\r\nDocker - https://github.com/MichaelCade/kollect/commit/8624cfabd5ed5af5fa107c3f172b809cdf22ed29\r\nGCP - https://github.com/MichaelCade/kollect/commit/24316876ea4db6e0305e68dc1195e4a8d3d79696\r\nTerraform - https://github.com/MichaelCade/kollect/commit/d471a6d8588ab5f6a15d0da950231301899a0099\r\nVault - https://github.com/MichaelCade/kollect/commit/227f87d903741de1a82060994b5c63c84695a5fb\r\nVeeam - https://github.com/MichaelCade/kollect/commit/dd29ad71031a160ae2dc404a4f6bf174c46bbfd9",
+  "prerelease": false,
+  "draft": false,
+  "published_at": "2025-06-10T08:54:49Z",
+  "repository": "MichaelCade/kollect"
+}
