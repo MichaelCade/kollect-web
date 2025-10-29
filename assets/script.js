@@ -56,14 +56,18 @@ async function fetchLatestRelease() {
     const downloadGrid = document.getElementById('download-grid');
     
     try {
+        console.log('Fetching latest release from kollect-web repository...');
         // Fetch from the public kollect-web repository where releases are synced
         const response = await fetch('https://api.github.com/repos/MichaelCade/kollect-web/releases/latest');
         
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
-            throw new Error('Failed to fetch release information');
+            throw new Error(`Failed to fetch release information: ${response.status} ${response.statusText}`);
         }
         
         const release = await response.json();
+        console.log('Successfully fetched release:', release.tag_name);
         
         // Update release info
         releaseInfo.innerHTML = `
@@ -84,15 +88,43 @@ async function fetchLatestRelease() {
         
     } catch (error) {
         console.error('Error fetching release:', error);
-        releaseInfo.innerHTML = `
-            <div class="error-message">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Unable to fetch latest release information. Please visit our 
-                <a href="https://github.com/MichaelCade/kollect-web/releases" target="_blank">GitHub releases page</a> 
-                for downloads.</p>
-            </div>
-        `;
+        
+        // Fallback to showing known release data
+        showFallbackRelease();
     }
+}
+
+function showFallbackRelease() {
+    const releaseInfo = document.getElementById('release-info');
+    const downloadGrid = document.getElementById('download-grid');
+    
+    releaseInfo.innerHTML = `
+        <div class="release-header">
+            <h3>Latest Release: 0.1.1</h3>
+            <p class="release-date">Released on October 29, 2025</p>
+            <p class="api-note"><i class="fas fa-info-circle"></i> Showing cached release info. Visit <a href="https://github.com/MichaelCade/kollect-web/releases" target="_blank">releases page</a> for the most current version.</p>
+        </div>
+        <div class="release-notes">
+            <h4>Release Notes</h4>
+            <div class="release-body">Fixed some missing web files. This release was automatically synced from the private kollect repository.</div>
+        </div>
+    `;
+    
+    // Show download links for known assets
+    const fallbackAssets = [
+        { name: 'kollect-darwin-amd64', size: 126099456, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-darwin-amd64' },
+        { name: 'kollect-darwin-arm64', size: 122486784, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-darwin-arm64' },
+        { name: 'kollect-linux-386', size: 116959232, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-linux-386' },
+        { name: 'kollect-linux-amd64', size: 124403712, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-linux-amd64' },
+        { name: 'kollect-linux-arm64', size: 119865344, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-linux-arm64' },
+        { name: 'kollect-windows-386.exe', size: 119558144, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-windows-386.exe' },
+        { name: 'kollect-windows-amd64.exe', size: 125679616, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-windows-amd64.exe' },
+        { name: 'kollect-windows-arm64.exe', size: 119901184, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-windows-arm64.exe' }
+    ];
+    
+    const downloads = createDownloadLinks(fallbackAssets);
+    downloadGrid.innerHTML = downloads;
+    downloadGrid.style.display = 'grid';
 }
 
 function createDownloadLinks(assets) {
