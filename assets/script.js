@@ -106,7 +106,7 @@ function showFallbackRelease() {
         </div>
         <div class="release-notes">
             <h4>Release Notes</h4>
-            <div class="release-body">Fixed some missing web files. This release was automatically synced from the private kollect repository.</div>
+            <div class="release-body">Fixed some missing web files.<br><br>---<br><br><em>This release was automatically synced from the private kollect repository.</em></div>
         </div>
     `;
     
