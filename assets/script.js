@@ -56,8 +56,8 @@ async function fetchLatestRelease() {
     const downloadGrid = document.getElementById('download-grid');
     
     try {
-        // Note: Replace with your actual GitHub repository
-        const response = await fetch('https://api.github.com/repos/MichaelCade/kollect/releases/latest');
+        // Fetch from the public kollect-web repository where releases are synced
+        const response = await fetch('https://api.github.com/repos/MichaelCade/kollect-web/releases/latest');
         
         if (!response.ok) {
             throw new Error('Failed to fetch release information');
@@ -88,7 +88,7 @@ async function fetchLatestRelease() {
             <div class="error-message">
                 <i class="fas fa-exclamation-triangle"></i>
                 <p>Unable to fetch latest release information. Please visit our 
-                <a href="https://github.com/MichaelCade/kollect/releases" target="_blank">GitHub releases page</a> 
+                <a href="https://github.com/MichaelCade/kollect-web/releases" target="_blank">GitHub releases page</a> 
                 for downloads.</p>
             </div>
         `;
