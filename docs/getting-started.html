@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Kollect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/style.css" rel="stylesheet">
+    <style>
+        .doc-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .doc-nav {
+            background: var(--bg-light);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+        }
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .code-block {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .warning {
+            background: #fef3cd;
+            border: 1px solid #fecb6b;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .info {
+            background: #cff4fc;
+            border: 1px solid #9eeaf9;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="getting-started.html">Docs</a></li>
+                    <li><a href="https://github.com/MichaelCade/kollect" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="doc-nav">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="getting-started.html">Documentation</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Getting Started</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="doc-content">
+        <h1>Getting Started with Kollect</h1>
+        
+        <p>Kollect is a powerful multi-cloud infrastructure discovery tool that helps you inventory and analyze resources across AWS, Azure, GCP, VMware vSphere, Docker, and Kubernetes environments.</p>
+
+        <h2>Installation</h2>
+
+        <h3>Download Binary</h3>
+        <p>Download the latest release for your platform:</p>
+
+        <div class="code-block">
+            <h4>Linux</h4>
+            <pre><code>curl -L -o kollect https://github.com/MichaelCade/kollect/releases/latest/download/kollect-linux
+chmod +x kollect</code></pre>
+        </div>
+
+        <div class="code-block">
+            <h4>macOS</h4>
+            <pre><code>curl -L -o kollect https://github.com/MichaelCade/kollect/releases/latest/download/kollect-darwin
+chmod +x kollect</code></pre>
+        </div>
+
+        <div class="code-block">
+            <h4>Windows</h4>
+            <pre><code># Download kollect-windows.exe from releases page
+# Run in PowerShell or Command Prompt</code></pre>
+        </div>
+
+        <h2>Quick Start</h2>
+
+        <h3>1. Run Basic Discovery</h3>
+        <p>Start Kollect without any configuration to discover local resources:</p>
+        
+        <div class="code-block">
+            <pre><code>./kollect</code></pre>
+        </div>
+
+        <p>This will start the web interface on <code>http://localhost:8080</code> and begin discovering:</p>
+        <ul>
+            <li>Local Docker containers and images</li>
+            <li>Kubernetes clusters (if kubectl is configured)</li>
+            <li>Local file systems</li>
+        </ul>
+
+        <h3>2. Configure Cloud Credentials</h3>
+        <p>To discover cloud resources, you'll need to configure credentials for your cloud providers.</p>
+
+        <div class="info">
+            <p><strong>Note:</strong> Kollect reads credentials from your existing cloud CLI configurations by default.</p>
+        </div>
+
+        <h4>AWS Configuration</h4>
+        <div class="code-block">
+            <pre><code># Using AWS CLI
+aws configure
+
+# Or set environment variables
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
+export AWS_DEFAULT_REGION="us-east-1"</code></pre>
+        </div>
+
+        <h4>Azure Configuration</h4>
+        <div class="code-block">
+            <pre><code># Using Azure CLI
+az login
+
+# Or set environment variables
+export AZURE_CLIENT_ID="your-client-id"
+export AZURE_CLIENT_SECRET="your-client-secret"
+export AZURE_TENANT_ID="your-tenant-id"
+export AZURE_SUBSCRIPTION_ID="your-subscription-id"</code></pre>
+        </div>
+
+        <h4>Google Cloud Configuration</h4>
+        <div class="code-block">
+            <pre><code># Using gcloud CLI
+gcloud auth application-default login
+
+# Or set service account key
+export GOOGLE_APPLICATION_CREDENTIALS="path/to/service-account-key.json"</code></pre>
+        </div>
+
+        <h3>3. Access the Web Interface</h3>
+        <p>Once Kollect is running, open your browser and navigate to:</p>
+        
+        <div class="code-block">
+            <pre><code>http://localhost:8080</code></pre>
+        </div>
+
+        <p>The web interface provides:</p>
+        <ul>
+            <li><strong>Dashboard</strong>: Overview of discovered resources</li>
+            <li><strong>Cloud Tabs</strong>: Detailed views for each cloud provider</li>
+            <li><strong>Search</strong>: Find specific resources across all environments</li>
+            <li><strong>Export</strong>: Download discovery results as JSON</li>
+        </ul>
+
+        <h2>Command Line Options</h2>
+
+        <div class="code-block">
+            <pre><code>./kollect [options]
+
+Options:
+  -port int
+        Port to run the web server on (default 8080)
+  -config string
+        Path to configuration file
+  -output string
+        Output format: web, json, csv (default "web")
+  -help
+        Show help information</code></pre>
+        </div>
+
+        <h2>Understanding the Output</h2>
+
+        <p>Kollect organizes discovered resources by provider and type:</p>
+
+        <ul>
+            <li><strong>AWS</strong>: EC2 instances, S3 buckets, RDS databases, DynamoDB tables, VPCs, EFS file systems</li>
+            <li><strong>Azure</strong>: Virtual machines, storage accounts, blob containers, virtual networks, resource groups</li>
+            <li><strong>GCP</strong>: Compute instances, Cloud Storage buckets, Cloud SQL instances, Cloud Functions</li>
+            <li><strong>vSphere</strong>: Virtual machines, datastores, clusters, resource pools</li>
+            <li><strong>Docker</strong>: Containers, images, volumes, networks</li>
+            <li><strong>Kubernetes</strong>: Nodes, pods, services, deployments, persistent volumes</li>
+        </ul>
+
+        <h2>Next Steps</h2>
+
+        <p>Now that you have Kollect running:</p>
+
+        <ol>
+            <li><a href="configuration.html">Configure advanced settings</a></li>
+            <li><a href="api.html">Explore the REST API</a></li>
+            <li>Set up automated discovery schedules</li>
+            <li>Export data for reporting and analysis</li>
+        </ol>
+
+        <div class="warning">
+            <p><strong>Security Note:</strong> Kollect requires read-only access to your cloud environments. Ensure you're using appropriate least-privilege credentials.</p>
+        </div>
+
+        <h2>Troubleshooting</h2>
+
+        <p>If you encounter issues:</p>
+
+        <ol>
+            <li>Check that your cloud credentials are properly configured</li>
+            <li>Verify network connectivity to cloud APIs</li>
+            <li>Review the console output for error messages</li>
+            <li>Consult the <a href="troubleshooting.html">troubleshooting guide</a></li>
+        </ol>
+
+        <p>For additional help, visit our <a href="https://github.com/MichaelCade/kollect/issues" target="_blank">GitHub issues page</a>.</p>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/MichaelCade/kollect">GitHub</a>
+                    <a href="../index.html">Home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

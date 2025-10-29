@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting - Kollect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/style.css" rel="stylesheet">
+    <style>
+        .doc-content { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        .doc-nav { background: var(--bg-light); padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; color: var(--text-light); }
+        .breadcrumb a { color: var(--primary-color); text-decoration: none; }
+        .code-block { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 1.5rem; margin: 1rem 0; overflow-x: auto; }
+        .warning { background: #fef3cd; border: 1px solid #fecb6b; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+        .info { background: #cff4fc; border: 1px solid #9eeaf9; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+        .error { background: #fce8e6; border: 1px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="getting-started.html">Docs</a></li>
+                    <li><a href="https://github.com/MichaelCade/kollect" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="doc-nav">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="getting-started.html">Documentation</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Troubleshooting</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="doc-content">
+        <h1>Troubleshooting Guide</h1>
+        
+        <p>This guide helps you diagnose and resolve common issues with Kollect.</p>
+
+        <h2>General Troubleshooting</h2>
+
+        <h3>Enable Verbose Logging</h3>
+        <p>First step in troubleshooting is to enable verbose logging:</p>
+        <div class="code-block">
+            <pre><code>./kollect -verbose</code></pre>
+        </div>
+
+        <h3>Check Service Health</h3>
+        <p>Verify that Kollect is running properly:</p>
+        <div class="code-block">
+            <pre><code>curl http://localhost:8080/api/health</code></pre>
+        </div>
+
+        <h2>Authentication Issues</h2>
+
+        <h3>AWS Authentication Failures</h3>
+        
+        <div class="error">
+            <h4>Error: "NoCredentialsProvider: no valid providers in chain"</h4>
+            <p><strong>Cause:</strong> AWS credentials are not configured properly.</p>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Verify AWS credentials are configured:
+                    <div class="code-block">
+                        <pre><code>aws sts get-caller-identity</code></pre>
+                    </div>
+                </li>
+                <li>Set environment variables:
+                    <div class="code-block">
+                        <pre><code>export AWS_ACCESS_KEY_ID="your-key"
+export AWS_SECRET_ACCESS_KEY="your-secret"</code></pre>
+                    </div>
+                </li>
+                <li>Check AWS credentials file: <code>~/.aws/credentials</code></li>
+            </ol>
+        </div>
+
+        <div class="error">
+            <h4>Error: "AccessDenied: User is not authorized"</h4>
+            <p><strong>Cause:</strong> Insufficient AWS permissions.</p>
+            <p><strong>Solution:</strong> Ensure your AWS user/role has the required permissions:
+                <div class="code-block">
+                    <pre><code># Required AWS permissions
+ec2:Describe*
+s3:ListAllMyBuckets
+s3:ListBucket
+rds:Describe*
+dynamodb:ListTables
+dynamodb:DescribeTable</code></pre>
+                </div>
+            </p>
+        </div>
+
+        <h3>Azure Authentication Failures</h3>
+
+        <div class="error">
+            <h4>Error: "DefaultAzureCredential authentication failed"</h4>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Login with Azure CLI:
+                    <div class="code-block">
+                        <pre><code>az login</code></pre>
+                    </div>
+                </li>
+                <li>Or set service principal credentials:
+                    <div class="code-block">
+                        <pre><code>export AZURE_CLIENT_ID="your-client-id"
+export AZURE_CLIENT_SECRET="your-secret"
+export AZURE_TENANT_ID="your-tenant-id"</code></pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <h3>Google Cloud Authentication Failures</h3>
+
+        <div class="error">
+            <h4>Error: "DefaultTokenSource: google: could not find default credentials"</h4>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Set up application default credentials:
+                    <div class="code-block">
+                        <pre><code>gcloud auth application-default login</code></pre>
+                    </div>
+                </li>
+                <li>Or use service account key:
+                    <div class="code-block">
+                        <pre><code>export GOOGLE_APPLICATION_CREDENTIALS="/path/to/key.json"</code></pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <h2>Network and Connectivity Issues</h2>
+
+        <h3>Connection Timeouts</h3>
+        
+        <div class="warning">
+            <h4>Issue: Discovery operations timing out</h4>
+            <p><strong>Possible causes:</strong></p>
+            <ul>
+                <li>Network connectivity issues</li>
+                <li>Firewall blocking API calls</li>
+                <li>Large number of resources causing timeouts</li>
+            </ul>
+            <p><strong>Solutions:</strong></p>
+            <ol>
+                <li>Increase timeout values:
+                    <div class="code-block">
+                        <pre><code>./kollect -timeout 10m</code></pre>
+                    </div>
+                </li>
+                <li>Reduce concurrent scans:
+                    <div class="code-block">
+                        <pre><code>./kollect -concurrent 2</code></pre>
+                    </div>
+                </li>
+                <li>Test connectivity to cloud APIs:
+                    <div class="code-block">
+                        <pre><code># Test AWS connectivity
+curl -I https://ec2.amazonaws.com
+
+# Test Azure connectivity  
+curl -I https://management.azure.com
+
+# Test GCP connectivity
+curl -I https://compute.googleapis.com</code></pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <h3>Proxy Configuration</h3>
+        <p>If you're behind a corporate proxy:</p>
+        <div class="code-block">
+            <pre><code>export HTTP_PROXY=http://proxy.company.com:8080
+export HTTPS_PROXY=http://proxy.company.com:8080
+export NO_PROXY=localhost,127.0.0.1</code></pre>
+        </div>
+
+        <h2>Performance Issues</h2>
+
+        <h3>Slow Discovery</h3>
+        
+        <div class="info">
+            <h4>Optimizing Discovery Performance</h4>
+            <ol>
+                <li>Increase concurrent operations:
+                    <div class="code-block">
+                        <pre><code>export KOLLECT_CONCURRENT_SCANS=10</code></pre>
+                    </div>
+                </li>
+                <li>Limit regions/projects:
+                    <div class="code-block">
+                        <pre><code>export KOLLECT_AWS_REGIONS="us-east-1,us-west-2"
+export KOLLECT_GCP_PROJECTS="project1,project2"</code></pre>
+                    </div>
+                </li>
+                <li>Filter resource types:
+                    <div class="code-block">
+                        <pre><code>export KOLLECT_AWS_SERVICES="ec2,s3,rds"</code></pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <h3>High Memory Usage</h3>
+        <p>For large infrastructures, Kollect may consume significant memory:</p>
+        <ul>
+            <li>Process smaller regions/projects separately</li>
+            <li>Enable result streaming (if available)</li>
+            <li>Increase system memory or use a larger instance</li>
+        </ul>
+
+        <h2>Docker Issues</h2>
+
+        <h3>Docker Socket Permission Denied</h3>
+        
+        <div class="error">
+            <h4>Error: "permission denied while connecting to Docker daemon socket"</h4>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Add user to docker group:
+                    <div class="code-block">
+                        <pre><code>sudo usermod -aG docker $USER
+# Logout and login again</code></pre>
+                    </div>
+                </li>
+                <li>Or run with sudo:
+                    <div class="code-block">
+                        <pre><code>sudo ./kollect</code></pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <h2>Kubernetes Issues</h2>
+
+        <h3>Kubeconfig Not Found</h3>
+        
+        <div class="error">
+            <h4>Error: "kubeconfig not found"</h4>
+            <p><strong>Solution:</strong></p>
+            <ol>
+                <li>Verify kubeconfig exists:
+                    <div class="code-block">
+                        <pre><code>ls -la ~/.kube/config</code></pre>
+                    </div>
+                </li>
+                <li>Test kubectl access:
+                    <div class="code-block">
+                        <pre><code>kubectl cluster-info</code></pre>
+                    </div>
+                </li>
+                <li>Set custom kubeconfig path:
+                    <div class="code-block">
+                        <pre><code>export KUBECONFIG=/path/to/your/kubeconfig</code></pre>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <h2>Web Interface Issues</h2>
+
+        <h3>Web Interface Not Loading</h3>
+        
+        <div class="warning">
+            <h4>Issue: Cannot access http://localhost:8080</h4>
+            <p><strong>Troubleshooting steps:</strong></p>
+            <ol>
+                <li>Check if Kollect is running:
+                    <div class="code-block">
+                        <pre><code>ps aux | grep kollect</code></pre>
+                    </div>
+                </li>
+                <li>Verify port is available:
+                    <div class="code-block">
+                        <pre><code>netstat -tulpn | grep :8080</code></pre>
+                    </div>
+                </li>
+                <li>Try different port:
+                    <div class="code-block">
+                        <pre><code>./kollect -port 9090</code></pre>
+                    </div>
+                </li>
+                <li>Check firewall settings</li>
+            </ol>
+        </div>
+
+        <h3>API Returning Empty Data</h3>
+        
+        <div class="info">
+            <h4>Possible causes:</h4>
+            <ul>
+                <li>Discovery still in progress</li>
+                <li>Authentication issues preventing data collection</li>
+                <li>No resources found in configured regions/projects</li>
+                <li>Filters excluding all resources</li>
+            </ul>
+            <p><strong>Check discovery status:</strong></p>
+            <div class="code-block">
+                <pre><code>curl http://localhost:8080/api/status</code></pre>
+            </div>
+        </div>
+
+        <h2>Common Configuration Mistakes</h2>
+
+        <h3>Wrong Region Configuration</h3>
+        <div class="code-block">
+            <pre><code># Wrong - using unavailable region
+export KOLLECT_AWS_REGIONS="us-east-3"
+
+# Correct - using valid region
+export KOLLECT_AWS_REGIONS="us-east-1"</code></pre>
+        </div>
+
+        <h3>Incorrect Environment Variables</h3>
+        <div class="code-block">
+            <pre><code># Check current environment variables
+env | grep -E "(AWS|AZURE|GOOGLE|KOLLECT)"
+
+# Clear conflicting variables if needed
+unset AZURE_CLIENT_ID</code></pre>
+        </div>
+
+        <h2>Getting Help</h2>
+
+        <h3>Enable Debug Mode</h3>
+        <div class="code-block">
+            <pre><code># Run with maximum logging
+export KOLLECT_LOG_LEVEL=debug
+./kollect -verbose</code></pre>
+        </div>
+
+        <h3>Collect Diagnostic Information</h3>
+        <div class="code-block">
+            <pre><code># System information
+uname -a
+./kollect -version
+
+# Network connectivity
+curl -I https://ec2.amazonaws.com
+curl -I https://management.azure.com
+
+# Environment variables
+env | grep -E "(AWS|AZURE|GOOGLE)" | sed 's/=.*/=***REDACTED***/'</code></pre>
+        </div>
+
+        <h3>Community Support</h3>
+        <ul>
+            <li><a href="https://github.com/MichaelCade/kollect/issues" target="_blank">GitHub Issues</a> - Report bugs and request features</li>
+            <li><a href="https://github.com/MichaelCade/kollect/discussions" target="_blank">GitHub Discussions</a> - Ask questions and share solutions</li>
+            <li>Check existing <a href="https://github.com/MichaelCade/kollect/wiki" target="_blank">documentation</a> and wiki</li>
+        </ul>
+
+        <div class="info">
+            <p><strong>When reporting issues:</strong></p>
+            <ul>
+                <li>Include Kollect version and OS information</li>
+                <li>Provide error messages and logs</li>
+                <li>Describe steps to reproduce the issue</li>
+                <li>Remove sensitive information (credentials, IPs, etc.)</li>
+            </ul>
+        </div>
+
+        <h2>FAQ</h2>
+
+        <h3>Q: Why is discovery taking so long?</h3>
+        <p>A: Large infrastructures with many resources can take time to scan. Try limiting regions/projects, increasing concurrent scans, or filtering resource types.</p>
+
+        <h3>Q: Can I run Kollect in read-only mode?</h3>
+        <p>A: Yes, Kollect only performs read operations. Ensure your credentials have only read permissions for security.</p>
+
+        <h3>Q: Does Kollect store my data?</h3>
+        <p>A: Kollect stores discovery results in memory during operation. Data is not persisted unless you explicitly export it.</p>
+
+        <h3>Q: Can I run multiple instances of Kollect?</h3>
+        <p>A: Yes, but use different ports and be mindful of API rate limits from cloud providers.</p>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/MichaelCade/kollect">GitHub</a>
+                    <a href="../index.html">Home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kollect - Multi-Cloud Infrastructure Discovery Tool</title>
+    <meta name="description" content="Kollect is a comprehensive tool for discovering and inventorying cloud infrastructure across AWS, Azure, GCP, VMware vSphere, and more.">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="assets/style.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#download">Download</a></li>
+                    <li><a href="#docs">Documentation</a></li>
+                    <li><a href="https://github.com/MichaelCade/kollect" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Multi-Cloud Infrastructure Discovery Made Simple</h1>
+                    <p class="hero-subtitle">Kollect automatically discovers and inventories your cloud infrastructure across AWS, Azure, GCP, VMware vSphere, Docker, Kubernetes, and more.</p>
+                    <div class="hero-actions">
+                        <a href="#download" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Download Latest
+                        </a>
+                        <a href="#features" class="btn btn-outline">
+                            <i class="fas fa-play"></i>
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">
+                            <div class="dashboard-title">Kollect Dashboard</div>
+                            <div class="dashboard-status">
+                                <span class="status-dot active"></span>
+                                <span>Scanning...</span>
+                            </div>
+                        </div>
+                        <div class="cloud-icons">
+                            <i class="fab fa-aws"></i>
+                            <i class="fab fa-microsoft"></i>
+                            <i class="fab fa-google"></i>
+                            <i class="fab fa-docker"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <h2>Comprehensive Cloud Discovery</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fab fa-aws"></i>
+                        </div>
+                        <h3>AWS Discovery</h3>
+                        <p>EC2 instances, S3 buckets, RDS databases, DynamoDB tables, VPCs, and EFS file systems</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fab fa-microsoft"></i>
+                        </div>
+                        <h3>Azure Resources</h3>
+                        <p>Virtual machines, storage accounts, blob containers, virtual networks, and resource groups</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <h3>Google Cloud</h3>
+                        <p>Compute instances, Cloud Storage buckets, Cloud SQL, and Cloud Functions</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>VMware vSphere</h3>
+                        <p>Virtual machines, datastores, clusters, and resource pools across your vCenter infrastructure</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fab fa-docker"></i>
+                        </div>
+                        <h3>Container Platforms</h3>
+                        <p>Docker containers, images, volumes, and Kubernetes clusters with detailed resource information</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Cost Analysis</h3>
+                        <p>Multi-cloud cost tracking and resource utilization analysis to optimize your spending</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section id="download" class="download">
+            <div class="container">
+                <h2>Download Kollect</h2>
+                <p class="download-subtitle">Get the latest version for your platform</p>
+                
+                <div class="release-info" id="release-info">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Loading latest release...
+                    </div>
+                </div>
+
+                <div class="download-grid" id="download-grid" style="display: none;">
+                    <!-- Downloads will be populated by JavaScript -->
+                </div>
+
+                <div class="installation">
+                    <h3>Quick Installation</h3>
+                    <div class="install-tabs">
+                        <button class="tab-btn active" data-tab="linux">Linux</button>
+                        <button class="tab-btn" data-tab="windows">Windows</button>
+                        <button class="tab-btn" data-tab="macos">macOS</button>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="linux">
+                            <pre><code># Download and make executable
+curl -L -o kollect https://github.com/MichaelCade/kollect/releases/latest/download/kollect-linux
+chmod +x kollect
+
+# Run discovery
+./kollect</code></pre>
+                        </div>
+                        <div class="tab-pane" id="windows">
+                            <pre><code># Download kollect-windows.exe
+# Run in PowerShell or Command Prompt
+kollect-windows.exe</code></pre>
+                        </div>
+                        <div class="tab-pane" id="macos">
+                            <pre><code># Download and make executable
+curl -L -o kollect https://github.com/MichaelCade/kollect/releases/latest/download/kollect-darwin
+chmod +x kollect
+
+# Run discovery
+./kollect</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="docs" class="documentation">
+            <div class="container">
+                <h2>Documentation</h2>
+                <div class="docs-grid">
+                    <a href="docs/getting-started.html" class="doc-card">
+                        <div class="doc-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <h3>Getting Started</h3>
+                        <p>Quick setup guide and first steps with Kollect</p>
+                    </a>
+                    <a href="docs/configuration.html" class="doc-card">
+                        <div class="doc-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3>Configuration</h3>
+                        <p>Configure cloud credentials and customize discovery</p>
+                    </a>
+                    <a href="docs/api.html" class="doc-card">
+                        <div class="doc-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>API Reference</h3>
+                        <p>REST API endpoints and data formats</p>
+                    </a>
+                    <a href="docs/troubleshooting.html" class="doc-card">
+                        <div class="doc-icon">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <h3>Troubleshooting</h3>
+                        <p>Common issues and solutions</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/MichaelCade/kollect">GitHub</a>
+                    <a href="docs/getting-started.html">Documentation</a>
+                    <a href="#download">Download</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kollect. Open source infrastructure discovery tool.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>

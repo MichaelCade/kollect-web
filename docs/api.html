@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - Kollect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/style.css" rel="stylesheet">
+    <style>
+        .doc-content { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        .doc-nav { background: var(--bg-light); padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; color: var(--text-light); }
+        .breadcrumb a { color: var(--primary-color); text-decoration: none; }
+        .code-block { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 1.5rem; margin: 1rem 0; overflow-x: auto; }
+        .endpoint { background: white; border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 1.5rem; margin: 1rem 0; }
+        .method { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-weight: bold; font-size: 0.875rem; }
+        .method.get { background: #e7f3ff; color: #0066cc; }
+        .method.post { background: #e7f9e7; color: #008800; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="getting-started.html">Docs</a></li>
+                    <li><a href="https://github.com/MichaelCade/kollect" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="doc-nav">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="getting-started.html">Documentation</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>API Reference</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="doc-content">
+        <h1>API Reference</h1>
+        
+        <p>Kollect provides a REST API for accessing discovered infrastructure data programmatically. The API is available when running Kollect with the web interface.</p>
+
+        <h2>Base URL</h2>
+        <div class="code-block">
+            <pre><code>http://localhost:8080/api</code></pre>
+        </div>
+
+        <h2>Authentication</h2>
+        <p>The API currently does not require authentication when accessing the local instance. For production deployments, implement appropriate authentication mechanisms.</p>
+
+        <h2>Data Endpoints</h2>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/data</h3>
+            <p>Retrieve all discovered infrastructure data across all providers.</p>
+            
+            <h4>Response</h4>
+            <div class="code-block">
+                <pre><code>{
+  "aws": {
+    "EC2Instances": [...],
+    "S3Buckets": [...],
+    "RDSInstances": [...],
+    "DynamoDBTables": [...],
+    "VPCs": [...],
+    "EFSFileSystems": [...]
+  },
+  "azure": {
+    "VirtualMachines": [...],
+    "StorageAccounts": [...],
+    "BlobContainers": [...],
+    "VirtualNetworks": [...],
+    "ResourceGroups": [...]
+  },
+  "gcp": {
+    "ComputeInstances": [...],
+    "GCSBuckets": [...],
+    "CloudSQLInstances": [...],
+    "CloudRunServices": [...],
+    "CloudFunctions": [...]
+  },
+  "docker": {
+    "containers": [...],
+    "images": [...],
+    "volumes": [...],
+    "networks": [...]
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/data/aws</h3>
+            <p>Retrieve only AWS infrastructure data.</p>
+            
+            <h4>Response</h4>
+            <div class="code-block">
+                <pre><code>{
+  "EC2Instances": [
+    {
+      "Name": "web-server-1",
+      "InstanceID": "i-1234567890abcdef0",
+      "Type": "t3.medium",
+      "State": "running",
+      "Region": "us-east-1"
+    }
+  ],
+  "S3Buckets": [
+    {
+      "Name": "my-data-bucket",
+      "Immutable": false,
+      "Region": "us-east-1"
+    }
+  ]
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/data/azure</h3>
+            <p>Retrieve only Azure infrastructure data.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/data/gcp</h3>
+            <p>Retrieve only Google Cloud infrastructure data.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/data/docker</h3>
+            <p>Retrieve only Docker infrastructure data.</p>
+        </div>
+
+        <h2>Snapshot Endpoints</h2>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/snapshots</h3>
+            <p>Retrieve historical snapshots of infrastructure discovery.</p>
+            
+            <h4>Response</h4>
+            <div class="code-block">
+                <pre><code>[
+  {
+    "timestamp": "2025-10-29T10:30:00Z",
+    "providers": ["aws", "azure", "docker"],
+    "resource_count": 245,
+    "duration": "45s"
+  }
+]</code></pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/snapshots</h3>
+            <p>Create a new infrastructure snapshot.</p>
+            
+            <h4>Request Body</h4>
+            <div class="code-block">
+                <pre><code>{
+  "providers": ["aws", "azure"],
+  "description": "Monthly infrastructure audit"
+}</code></pre>
+            </div>
+        </div>
+
+        <h2>Cost Analysis Endpoints</h2>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/costs</h3>
+            <p>Retrieve cost analysis data for all cloud providers.</p>
+            
+            <h4>Query Parameters</h4>
+            <ul>
+                <li><code>platform</code> - Filter by platform (aws, azure, gcp, all)</li>
+                <li><code>region</code> - Filter by region</li>
+                <li><code>timeframe</code> - Time period (1d, 7d, 30d, 90d)</li>
+            </ul>
+            
+            <h4>Example</h4>
+            <div class="code-block">
+                <pre><code>GET /api/costs?platform=aws&timeframe=30d</code></pre>
+            </div>
+        </div>
+
+        <h2>Status and Health Endpoints</h2>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/health</h3>
+            <p>Check the health status of the Kollect service.</p>
+            
+            <h4>Response</h4>
+            <div class="code-block">
+                <pre><code>{
+  "status": "healthy",
+  "version": "1.0.0",
+  "uptime": "2h45m30s",
+  "last_discovery": "2025-10-29T10:30:00Z"
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/status</h3>
+            <p>Get detailed status information for all discovery providers.</p>
+            
+            <h4>Response</h4>
+            <div class="code-block">
+                <pre><code>{
+  "providers": {
+    "aws": {
+      "status": "connected",
+      "last_scan": "2025-10-29T10:30:00Z",
+      "resources_found": 45,
+      "errors": []
+    },
+    "azure": {
+      "status": "error",
+      "last_scan": "2025-10-29T09:15:00Z",
+      "resources_found": 0,
+      "errors": ["Authentication failed"]
+    }
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <h2>Discovery Control Endpoints</h2>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/discover</h3>
+            <p>Trigger a new discovery scan.</p>
+            
+            <h4>Request Body</h4>
+            <div class="code-block">
+                <pre><code>{
+  "providers": ["aws", "azure"],
+  "force_refresh": true
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/discover/status</h3>
+            <p>Get the status of the current discovery operation.</p>
+            
+            <h4>Response</h4>
+            <div class="code-block">
+                <pre><code>{
+  "status": "running",
+  "progress": 65,
+  "current_provider": "aws",
+  "started_at": "2025-10-29T10:30:00Z",
+  "estimated_completion": "2025-10-29T10:35:00Z"
+}</code></pre>
+            </div>
+        </div>
+
+        <h2>Export Endpoints</h2>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/export</h3>
+            <p>Export discovery data in various formats.</p>
+            
+            <h4>Query Parameters</h4>
+            <ul>
+                <li><code>format</code> - Export format (json, csv, xlsx)</li>
+                <li><code>providers</code> - Comma-separated list of providers</li>
+                <li><code>resources</code> - Comma-separated list of resource types</li>
+            </ul>
+            
+            <h4>Example</h4>
+            <div class="code-block">
+                <pre><code>GET /api/export?format=csv&providers=aws,azure</code></pre>
+            </div>
+        </div>
+
+        <h2>Error Responses</h2>
+
+        <p>All endpoints return standard HTTP status codes and JSON error responses:</p>
+
+        <div class="code-block">
+            <pre><code>{
+  "error": "Authentication failed",
+  "code": "AUTH_ERROR",
+  "timestamp": "2025-10-29T10:30:00Z",
+  "details": {
+    "provider": "aws",
+    "region": "us-east-1"
+  }
+}</code></pre>
+        </div>
+
+        <h3>Common Error Codes</h3>
+        <ul>
+            <li><code>400</code> - Bad Request: Invalid request parameters</li>
+            <li><code>401</code> - Unauthorized: Authentication required</li>
+            <li><code>403</code> - Forbidden: Insufficient permissions</li>
+            <li><code>404</code> - Not Found: Resource not found</li>
+            <li><code>429</code> - Too Many Requests: Rate limit exceeded</li>
+            <li><code>500</code> - Internal Server Error: Server error</li>
+            <li><code>503</code> - Service Unavailable: Service temporarily unavailable</li>
+        </ul>
+
+        <h2>Usage Examples</h2>
+
+        <h3>cURL Examples</h3>
+        <div class="code-block">
+            <pre><code># Get all data
+curl http://localhost:8080/api/data
+
+# Get AWS data only
+curl http://localhost:8080/api/data/aws
+
+# Get cost data for AWS
+curl "http://localhost:8080/api/costs?platform=aws&timeframe=30d"
+
+# Trigger discovery
+curl -X POST http://localhost:8080/api/discover \
+  -H "Content-Type: application/json" \
+  -d '{"providers": ["aws", "azure"]}'
+
+# Export to CSV
+curl "http://localhost:8080/api/export?format=csv" -o infrastructure.csv</code></pre>
+        </div>
+
+        <h3>Python Example</h3>
+        <div class="code-block">
+            <pre><code>import requests
+import json
+
+# Get all infrastructure data
+response = requests.get('http://localhost:8080/api/data')
+data = response.json()
+
+# Print AWS EC2 instances
+for instance in data.get('aws', {}).get('EC2Instances', []):
+    print(f"{instance['Name']} ({instance['Type']}) - {instance['State']}")
+
+# Trigger new discovery
+discovery_request = {
+    "providers": ["aws", "azure"],
+    "force_refresh": True
+}
+response = requests.post(
+    'http://localhost:8080/api/discover',
+    headers={'Content-Type': 'application/json'},
+    data=json.dumps(discovery_request)
+)</code></pre>
+        </div>
+
+        <h2>Rate Limiting</h2>
+
+        <p>The API implements rate limiting to prevent abuse:</p>
+        <ul>
+            <li>Data endpoints: 100 requests per minute</li>
+            <li>Discovery endpoints: 10 requests per minute</li>
+            <li>Export endpoints: 5 requests per minute</li>
+        </ul>
+
+        <p>Rate limit headers are included in responses:</p>
+        <div class="code-block">
+            <pre><code>X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1635520800</code></pre>
+        </div>
+
+        <h2>Webhooks</h2>
+
+        <p>Configure webhooks to receive notifications when discovery completes:</p>
+
+        <div class="code-block">
+            <pre><code># In configuration file
+webhooks:
+  discovery_complete:
+    url: "https://your-webhook-endpoint.com/kollect"
+    headers:
+      Authorization: "Bearer your-token"</code></pre>
+        </div>
+
+        <p>For more API examples and integration patterns, visit our <a href="https://github.com/MichaelCade/kollect/tree/main/examples" target="_blank">GitHub examples</a>.</p>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/MichaelCade/kollect">GitHub</a>
+                    <a href="../index.html">Home</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

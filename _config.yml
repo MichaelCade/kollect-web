@@ -1,0 +1,26 @@
+title: Kollect
+description: Multi-Cloud Infrastructure Discovery Tool
+url: "https://michaelcade.github.io/kollect-web"
+baseurl: ""
+
+# GitHub Pages settings
+theme: null
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO settings
+author: Michael Cade
+twitter:
+  username: MichaelCade1
+social:
+  name: Michael Cade
+  links:
+    - https://github.com/MichaelCade
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
