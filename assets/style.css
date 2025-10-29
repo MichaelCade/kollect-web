@@ -553,3 +553,82 @@ body {
         justify-content: center;
     }
 }
+
+/* Platform Badges */
+.platform-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.platform-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.platform-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.platform-badge i {
+    font-size: 1rem;
+}
+
+.badge-logo {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* Platform-specific colors */
+.platform-badge.aws {
+    background: linear-gradient(135deg, #FF9900, #EC7211);
+}
+
+.platform-badge.azure {
+    background: linear-gradient(135deg, #0078D4, #106EBE);
+}
+
+.platform-badge.gcp {
+    background: linear-gradient(135deg, #4285F4, #357AE8);
+}
+
+.platform-badge.kubernetes {
+    background: linear-gradient(135deg, #326CE5, #1A5DC6);
+}
+
+.platform-badge.docker {
+    background: linear-gradient(135deg, #2496ED, #0B7EC8);
+}
+
+.platform-badge.vsphere {
+    background: linear-gradient(135deg, #607078, #4A5C66);
+}
+
+.platform-badge.vault {
+    background: linear-gradient(135deg, #000000, #333333);
+}
+
+.platform-badge.terraform {
+    background: linear-gradient(135deg, #7B42BC, #623196);
+}
+
+.platform-badge.cost {
+    background: linear-gradient(135deg, #28A745, #1E7E34);
+}
+
+.platform-badge.snapshots {
+    background: linear-gradient(135deg, #6C757D, #5A6268);
+}

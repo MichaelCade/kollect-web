@@ -72,55 +72,67 @@
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                                <i class="fab fa-aws" style="color: #FF9900;"></i>
-                                <i class="fab fa-microsoft" style="color: #00BCF2;"></i>
-                                <i class="fab fa-google" style="color: #4285F4;"></i>
-                            </div>
+                            <i class="fas fa-cloud"></i>
                         </div>
                         <h3>Cloud Discovery</h3>
-                        <p>AWS EC2, S3, RDS, DynamoDB • Azure VMs, Storage, Networks • GCP Compute, Storage, Cloud SQL</p>
+                        <div class="platform-badges">
+                            <span class="platform-badge aws"><img src="assets/aws.svg" alt="AWS" class="badge-logo"> AWS</span>
+                            <span class="platform-badge azure"><img src="assets/azure.svg" alt="Azure" class="badge-logo"> Azure</span>
+                            <span class="platform-badge gcp"><img src="assets/gcp.svg" alt="GCP" class="badge-logo"> GCP</span>
+                        </div>
+                        <p>EC2, S3, RDS, DynamoDB • VMs, Storage, Networks • Compute, Storage, Cloud SQL</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                                <i class="fas fa-dharmachakra" style="color: #326CE5;"></i>
-                                <i class="fab fa-docker" style="color: #2496ED;"></i>
-                            </div>
+                            <i class="fas fa-cube"></i>
                         </div>
                         <h3>Container Platforms</h3>
-                        <p>Kubernetes clusters, pods, services, deployments • Docker containers, images, volumes, networks</p>
+                        <div class="platform-badges">
+                            <span class="platform-badge kubernetes"><img src="assets/kubernetes.svg" alt="Kubernetes" class="badge-logo"> Kubernetes</span>
+                            <span class="platform-badge docker"><img src="assets/docker.png" alt="Docker" class="badge-logo"> Docker</span>
+                        </div>
+                        <p>Clusters, pods, services, deployments • Containers, images, volumes, networks</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3>Cost Analysis</h3>
-                        <p>Multi-cloud cost tracking and resource utilization analysis to optimize your spending</p>
+                        <div class="platform-badges">
+                            <span class="platform-badge cost"><i class="fas fa-dollar-sign"></i> Multi-Cloud</span>
+                        </div>
+                        <p>Track spending and resource utilization across all platforms to optimize costs</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-camera"></i>
                         </div>
                         <h3>Snapshot Hunter</h3>
-                        <p>Discover and analyze snapshots across cloud platforms to identify orphaned backups and reduce costs</p>
+                        <div class="platform-badges">
+                            <span class="platform-badge snapshots"><i class="fas fa-search"></i> Discovery</span>
+                        </div>
+                        <p>Find orphaned snapshots and backups across cloud platforms to reduce storage costs</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-server" style="color: #607078;"></i>
+                            <i class="fas fa-server"></i>
                         </div>
                         <h3>Virtual Environments</h3>
-                        <p>VMware vSphere virtual machines, datastores, clusters, and resource pools across vCenter infrastructure</p>
+                        <div class="platform-badges">
+                            <span class="platform-badge vsphere"><img src="assets/vsphere.png" alt="vSphere" class="badge-logo"> vSphere</span>
+                        </div>
+                        <p>Virtual machines, datastores, clusters, and resource pools across vCenter infrastructure</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                                <i class="fas fa-lock" style="color: #000;"></i>
-                                <i class="fas fa-cube" style="color: #7B42BC;"></i>
-                            </div>
+                            <i class="fas fa-tools"></i>
                         </div>
                         <h3>DevOps Tooling</h3>
-                        <p>HashiCorp Vault secrets and policies • Terraform infrastructure state and resource inventory</p>
+                        <div class="platform-badges">
+                            <span class="platform-badge vault"><img src="assets/vault.png" alt="Vault" class="badge-logo"> Vault</span>
+                            <span class="platform-badge terraform"><img src="assets/terraform.svg" alt="Terraform" class="badge-logo"> Terraform</span>
+                        </div>
+                        <p>Secrets and policies inventory • Infrastructure state and resource discovery</p>
                     </div>
                 </div>
             </div>
