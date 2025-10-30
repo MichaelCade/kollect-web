@@ -50,23 +50,23 @@
     <main class="doc-content">
         <h1>API Reference</h1>
         
-        <p>Kollect provides a REST API for accessing discovered infrastructure data programmatically. The API is available when running Kollect with the web interface.</p>
-
+        <p>Kollect provides a REST API for accessing inventory data and managing platform connections. The API runs on <strong>http://localhost:8080</strong> when kollect is running.</p>
+        
         <h2>Base URL</h2>
         <div class="code-block">
             <pre><code>http://localhost:8080/api</code></pre>
         </div>
 
         <h2>Authentication</h2>
-        <p>The API currently does not require authentication when accessing the local instance. For production deployments, implement appropriate authentication mechanisms.</p>
+        <p>The API does not require authentication when accessing the local instance.</p>
 
-        <h2>Data Endpoints</h2>
+        <h2>Core Data Endpoints</h2>
 
         <div class="endpoint">
             <h3><span class="method get">GET</span> /api/data</h3>
-            <p>Retrieve all discovered infrastructure data across all providers.</p>
+            <p>Retrieve all discovered infrastructure data across all platforms. This is the main endpoint that returns the complete inventory.</p>
             
-            <h4>Response</h4>
+            <h4>Response Structure</h4>
             <div class="code-block">
                 <pre><code>{
   "aws": {
@@ -87,90 +87,80 @@
   "gcp": {
     "ComputeInstances": [...],
     "GCSBuckets": [...],
-    "CloudSQLInstances": [...],
-    "CloudRunServices": [...],
-    "CloudFunctions": [...]
+    "CloudSQLInstances": [...]
+  },
+  "kubernetes": {
+    "Namespaces": [...],
+    "Pods": [...],
+    "Services": [...],
+    "Deployments": [...]
   },
   "docker": {
     "containers": [...],
     "images": [...],
     "volumes": [...],
     "networks": [...]
+  },
+  "terraform": {
+    "Resources": [...],
+    "Outputs": [...],
+    "Variables": [...]
+  },
+  "vault": {
+    "Secrets": [...],
+    "Policies": [...],
+    "AuthMethods": [...]
+  },
+  "vsphere": {
+    "VirtualMachines": [...],
+    "Clusters": [...],
+    "Hosts": [...],
+    "Datastores": [...]
   }
 }</code></pre>
             </div>
         </div>
 
         <div class="endpoint">
-            <h3><span class="method get">GET</span> /api/data/aws</h3>
-            <p>Retrieve only AWS infrastructure data.</p>
+            <h3><span class="method post">POST</span> /api/import</h3>
+            <p>Import data from a JSON file or external source into kollect.</p>
             
-            <h4>Response</h4>
+            <h4>Request Body</h4>
             <div class="code-block">
                 <pre><code>{
-  "EC2Instances": [
-    {
-      "Name": "web-server-1",
-      "InstanceID": "i-1234567890abcdef0",
-      "Type": "t3.medium",
-      "State": "running",
-      "Region": "us-east-1"
-    }
-  ],
-  "S3Buckets": [
-    {
-      "Name": "my-data-bucket",
-      "Immutable": false,
-      "Region": "us-east-1"
-    }
-  ]
+  "aws": { ... },
+  "azure": { ... },
+  "gcp": { ... }
 }</code></pre>
             </div>
         </div>
 
         <div class="endpoint">
-            <h3><span class="method get">GET</span> /api/data/azure</h3>
-            <p>Retrieve only Azure infrastructure data.</p>
-        </div>
-
-        <div class="endpoint">
-            <h3><span class="method get">GET</span> /api/data/gcp</h3>
-            <p>Retrieve only Google Cloud infrastructure data.</p>
-        </div>
-
-        <div class="endpoint">
-            <h3><span class="method get">GET</span> /api/data/docker</h3>
-            <p>Retrieve only Docker infrastructure data.</p>
+            <h3><span class="method post">POST</span> /api/switch</h3>
+            <p>Switch between different inventory datasets or sources.</p>
         </div>
 
         <h2>Snapshot Endpoints</h2>
 
         <div class="endpoint">
             <h3><span class="method get">GET</span> /api/snapshots</h3>
-            <p>Retrieve historical snapshots of infrastructure discovery.</p>
+            <p>Retrieve snapshot information across all platforms. Used by the Snapshot Hunter feature.</p>
             
             <h4>Response</h4>
             <div class="code-block">
-                <pre><code>[
-  {
-    "timestamp": "2025-10-29T10:30:00Z",
-    "providers": ["aws", "azure", "docker"],
-    "resource_count": 245,
-    "duration": "45s"
-  }
-]</code></pre>
-            </div>
-        </div>
-
-        <div class="endpoint">
-            <h3><span class="method post">POST</span> /api/snapshots</h3>
-            <p>Create a new infrastructure snapshot.</p>
-            
-            <h4>Request Body</h4>
-            <div class="code-block">
                 <pre><code>{
-  "providers": ["aws", "azure"],
-  "description": "Monthly infrastructure audit"
+  "aws": {
+    "EBSSnapshots": [...],
+    "RDSSnapshots": [...]
+  },
+  "azure": {
+    "DiskSnapshots": [...],
+    "VMSnapshots": [...]
+  },
+  "gcp": {
+    "DiskSnapshots": [...],
+    "PersistentDiskSnapshots": [...]
+  }
 }</code></pre>
             </div>
         </div>
@@ -179,40 +169,128 @@
 
         <div class="endpoint">
             <h3><span class="method get">GET</span> /api/costs</h3>
-            <p>Retrieve cost analysis data for all cloud providers.</p>
+            <p>Retrieve cost analysis data across cloud platforms. Used by the Cost Explorer feature.</p>
             
             <h4>Query Parameters</h4>
             <ul>
-                <li><code>platform</code> - Filter by platform (aws, azure, gcp, all)</li>
-                <li><code>region</code> - Filter by region</li>
-                <li><code>timeframe</code> - Time period (1d, 7d, 30d, 90d)</li>
+                <li><code>platform</code> - Filter by cloud platform (aws, azure, gcp)</li>
+                <li><code>timeframe</code> - Time period for cost analysis</li>
             </ul>
-            
-            <h4>Example</h4>
-            <div class="code-block">
-                <pre><code>GET /api/costs?platform=aws&timeframe=30d</code></pre>
-            </div>
         </div>
 
-        <h2>Status and Health Endpoints</h2>
+        <h2>Platform Connection Endpoints</h2>
 
         <div class="endpoint">
-            <h3><span class="method get">GET</span> /api/health</h3>
-            <p>Check the health status of the Kollect service.</p>
+            <h3><span class="method get">GET</span> /api/check-credentials</h3>
+            <p>Check the connection status of all configured platforms. Used by the web interface to show connection badges.</p>
             
             <h4>Response</h4>
             <div class="code-block">
                 <pre><code>{
-  "status": "healthy",
-  "version": "1.0.0",
-  "uptime": "2h45m30s",
-  "last_discovery": "2025-10-29T10:30:00Z"
+  "aws": true,
+  "azure": false,
+  "gcp": true,
+  "kubernetes": true,
+  "docker": true,
+  "terraform": false,
+  "vault": false,
+  "vsphere": false,
+  "veeam": false
 }</code></pre>
             </div>
         </div>
 
+        <h2>Platform-Specific Connection Endpoints</h2>
+
         <div class="endpoint">
-            <h3><span class="method get">GET</span> /api/status</h3>
+            <h3><span class="method post">POST</span> /api/aws/connect</h3>
+            <p>Connect to AWS and trigger resource discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/azure/connect</h3>
+            <p>Connect to Azure and trigger resource discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/azure/subscriptions</h3>
+            <p>List available Azure subscriptions.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/gcp/connect</h3>
+            <p>Connect to Google Cloud and trigger resource discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/gcp/projects</h3>
+            <p>List available GCP projects.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/kubernetes/connect</h3>
+            <p>Connect to Kubernetes cluster and trigger resource discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/kubernetes/contexts</h3>
+            <p>List available Kubernetes contexts from kubeconfig.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/kubernetes/upload-kubeconfig</h3>
+            <p>Upload a kubeconfig file for Kubernetes connection.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/docker/connect</h3>
+            <p>Connect to Docker daemon and trigger container discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/docker/test-connection</h3>
+            <p>Test Docker daemon connectivity.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/terraform/connect</h3>
+            <p>Connect to Terraform state and trigger resource discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/terraform/upload-state</h3>
+            <p>Upload a Terraform state file for analysis.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/vault/connect</h3>
+            <p>Connect to HashiCorp Vault and trigger secret discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/vsphere/connect</h3>
+            <p>Connect to VMware vSphere and trigger VM discovery.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method get">GET</span> /api/vsphere</h3>
+            <p>Get vSphere connection status and basic information.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/veeam/connect</h3>
+            <p>Connect to Veeam Backup & Replication server.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/rubrik/connect</h3>
+            <p>Connect to Rubrik backup platform.</p>
+        </div>
+
+        <div class="endpoint">
+            <h3><span class="method post">POST</span> /api/cohesity/connect</h3>
+            <p>Connect to Cohesity backup platform.</p>
+        </div>
             <p>Get detailed status information for all discovery providers.</p>
             
             <h4>Response</h4>
@@ -269,21 +347,81 @@
 
         <h2>Export Endpoints</h2>
 
-        <div class="endpoint">
-            <h3><span class="method get">GET</span> /api/export</h3>
-            <p>Export discovery data in various formats.</p>
-            
-            <h4>Query Parameters</h4>
+                <h2>Error Responses</h2>
+
+        <p>All endpoints return appropriate HTTP status codes. Error responses are in JSON format:</p>
+
+        <div class="code-block">
+            <pre><code>{
+  "error": "Connection failed",
+  "details": "Unable to connect to AWS: invalid credentials"
+}</code></pre>
+        </div>
+
+        <h3>Common Status Codes</h3>
+        <ul>
+            <li><code>200</code> - Success: Request completed successfully</li>
+            <li><code>400</code> - Bad Request: Invalid request parameters</li>
+            <li><code>500</code> - Internal Server Error: Platform connection or discovery error</li>
+        </ul>
+
+        <h2>Usage Examples</h2>
+
+        <h3>Using cURL</h3>
+        <div class="code-block">
+            <pre><code># Get all discovered data
+curl http://localhost:8080/api/data
+
+# Check platform connections
+curl http://localhost:8080/api/check-credentials
+
+# Get snapshots
+curl http://localhost:8080/api/snapshots
+
+# Get cost analysis
+curl http://localhost:8080/api/costs
+
+# Import data from file
+curl -X POST http://localhost:8080/api/import \
+  -H "Content-Type: application/json" \
+  -d @my-infrastructure-data.json</code></pre>
+        </div>
+
+        <h3>Using JavaScript/Fetch</h3>
+        <div class="code-block">
+            <pre><code>// Get all data
+fetch('http://localhost:8080/api/data')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+// Check credentials
+fetch('http://localhost:8080/api/check-credentials')
+  .then(response => response.json())
+  .then(status => {
+    if (status.aws) {
+      console.log('AWS is connected');
+    }
+  });
+
+// Import data
+fetch('http://localhost:8080/api/import', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(importData)
+});</code></pre>
+        </div>
+
+        <h2>Integration Notes</h2>
+
+        <div class="info">
+            <h4>🔧 Development Tips</h4>
             <ul>
-                <li><code>format</code> - Export format (json, csv, xlsx)</li>
-                <li><code>providers</code> - Comma-separated list of providers</li>
-                <li><code>resources</code> - Comma-separated list of resource types</li>
+                <li>The API is designed for local development and testing</li>
+                <li>Data is held in memory while kollect is running</li>
+                <li>Use <code>--output</code> flag to persist data to files</li>
+                <li>Platform connections are tested in real-time</li>
+                <li>CORS is enabled for local development</li>
             </ul>
-            
-            <h4>Example</h4>
-            <div class="code-block">
-                <pre><code>GET /api/export?format=csv&providers=aws,azure</code></pre>
-            </div>
         </div>
 
         <h2>Error Responses</h2>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - Kollect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/style.css" rel="stylesheet">
+    <style>
+        .doc-content { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        .doc-nav { background: var(--bg-light); padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; color: var(--text-light); }
+        .breadcrumb a { color: var(--primary-color); text-decoration: none; }
+        .code-block { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 1.5rem; margin: 1rem 0; overflow-x: auto; }
+        .warning { background: #fef3cd; border: 1px solid #fecb6b; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+        .info { background: #cff4fc; border: 1px solid #9eeaf9; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+        .flag-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .flag-table th, .flag-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .flag-table th { background: var(--bg-light); font-weight: 600; }
+        .flag-table code { background: var(--bg-light); padding: 0.2rem 0.4rem; border-radius: 0.25rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-search-plus"></i>
+                    <span>Kollect</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="getting-started.html">Docs</a></li>
+                    <li><a href="https://github.com/MichaelCade/kollect" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="doc-nav">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="getting-started.html">Documentation</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Configuration</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="doc-content">
+        <h1>Configuration Guide</h1>
+        
+        <p>Kollect is configured through command-line flags and environment variables. <strong>There are no configuration files</strong> - everything is controlled via CLI arguments and environment variables for simplicity.</p>
+
+        <div class="info">
+            <p><strong>💡 Key Point:</strong> Kollect uses your existing cloud CLI configurations (AWS CLI, Azure CLI, gcloud, kubectl) by default. No additional setup required for basic usage!</p>
+        </div>
+
+        <h2>Basic Usage</h2>
+
+        <p>Start kollect with different inventory types:</p>
+
+        <div class="code-block">
+            <pre><code># Discover all available resources and start web UI
+./kollect --inventory all
+
+# Start web interface only (for importing/viewing existing data)
+./kollect --browser
+
+# Discover specific platforms
+./kollect --inventory kubernetes
+./kollect --inventory aws
+./kollect --inventory azure
+./kollect --inventory gcp
+./kollect --inventory docker
+./kollect --inventory terraform
+./kollect --inventory vault
+./kollect --inventory vsphere
+./kollect --inventory veeam
+
+# Find snapshots across all platforms
+./kollect --snapshots
+
+# Enable backup platform mode
+./kollect --backup</code></pre>
+        </div>
+
+        <h2>Command-Line Flags</h2>
+
+        <p>Complete list of available command-line options:</p>
+
+        <table class="flag-table">
+            <thead>
+                <tr>
+                    <th>Flag</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>--inventory</code></td>
+                    <td>Type of inventory to collect</td>
+                    <td><code>--inventory kubernetes</code></td>
+                </tr>
+                <tr>
+                    <td><code>--browser</code></td>
+                    <td>Start web interface only</td>
+                    <td><code>--browser</code></td>
+                </tr>
+                <tr>
+                    <td><code>--snapshots</code></td>
+                    <td>Collect snapshots from all platforms</td>
+                    <td><code>--snapshots</code></td>
+                </tr>
+                <tr>
+                    <td><code>--backup</code></td>
+                    <td>Enable backup platform UI mode</td>
+                    <td><code>--backup</code></td>
+                </tr>
+                <tr>
+                    <td><code>--output</code></td>
+                    <td>Save collected data to file</td>
+                    <td><code>--output data.json</code></td>
+                </tr>
+                <tr>
+                    <td><code>--storage</code></td>
+                    <td>Collect only storage objects (K8s only)</td>
+                    <td><code>--storage</code></td>
+                </tr>
+                <tr>
+                    <td><code>--kubeconfig</code></td>
+                    <td>Path to kubeconfig file</td>
+                    <td><code>--kubeconfig ~/.kube/config</code></td>
+                </tr>
+                <tr>
+                    <td><code>--kube-context</code></td>
+                    <td>Kubernetes context to use</td>
+                    <td><code>--kube-context prod-cluster</code></td>
+                </tr>
+                <tr>
+                    <td><code>--docker-host</code></td>
+                    <td>Docker host connection</td>
+                    <td><code>--docker-host unix:///var/run/docker.sock</code></td>
+                </tr>
+                <tr>
+                    <td><code>--mcp</code></td>
+                    <td>Start MCP (Model Context Protocol) server</td>
+                    <td><code>--mcp</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Platform-Specific Flags</h3>
+
+        <h4>Terraform</h4>
+        <table class="flag-table">
+            <tbody>
+                <tr>
+                    <td><code>--terraform-state</code></td>
+                    <td>Path to local Terraform state file</td>
+                    <td><code>--terraform-state ./terraform.tfstate</code></td>
+                </tr>
+                <tr>
+                    <td><code>--terraform-s3</code></td>
+                    <td>S3 bucket containing state</td>
+                    <td><code>--terraform-s3 mybucket/terraform.tfstate</code></td>
+                </tr>
+                <tr>
+                    <td><code>--terraform-s3-region</code></td>
+                    <td>AWS region for S3 bucket</td>
+                    <td><code>--terraform-s3-region us-east-1</code></td>
+                </tr>
+                <tr>
+                    <td><code>--terraform-azure</code></td>
+                    <td>Azure storage container</td>
+                    <td><code>--terraform-azure storage/container/blob</code></td>
+                </tr>
+                <tr>
+                    <td><code>--terraform-gcs</code></td>
+                    <td>GCS bucket and object</td>
+                    <td><code>--terraform-gcs bucket/terraform.tfstate</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Vault</h4>
+        <table class="flag-table">
+            <tbody>
+                <tr>
+                    <td><code>--vault-addr</code></td>
+                    <td>Vault server address</td>
+                    <td><code>--vault-addr https://vault.example.com:8200</code></td>
+                </tr>
+                <tr>
+                    <td><code>--vault-token</code></td>
+                    <td>Vault authentication token</td>
+                    <td><code>--vault-token s.abc123...</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>VMware vSphere</h4>
+        <table class="flag-table">
+            <tbody>
+                <tr>
+                    <td><code>--vsphere-server</code></td>
+                    <td>vCenter server address</td>
+                    <td><code>--vsphere-server vcenter.example.com</code></td>
+                </tr>
+                <tr>
+                    <td><code>--vsphere-username</code></td>
+                    <td>vSphere username</td>
+                    <td><code>--vsphere-username readonly@vsphere.local</code></td>
+                </tr>
+                <tr>
+                    <td><code>--vsphere-password</code></td>
+                    <td>vSphere password</td>
+                    <td><code>--vsphere-password password123</code></td>
+                </tr>
+                <tr>
+                    <td><code>--vsphere-insecure</code></td>
+                    <td>Skip SSL verification</td>
+                    <td><code>--vsphere-insecure</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Veeam Backup & Replication</h4>
+        <table class="flag-table">
+            <tbody>
+                <tr>
+                    <td><code>--veeam-url</code></td>
+                    <td>Veeam server URL</td>
+                    <td><code>--veeam-url https://veeam.example.com:9419</code></td>
+                </tr>
+                <tr>
+                    <td><code>--veeam-username</code></td>
+                    <td>Veeam username</td>
+                    <td><code>--veeam-username admin</code></td>
+                </tr>
+                <tr>
+                    <td><code>--veeam-password</code></td>
+                    <td>Veeam password</td>
+                    <td><code>--veeam-password password123</code></td>
+                </tr>
+                <tr>
+                    <td><code>--veeam-insecure</code></td>
+                    <td>Skip SSL verification</td>
+                    <td><code>--veeam-insecure</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Environment Variables</h2>
+
+        <p>Many flags can also be set via environment variables for security and convenience:</p>
+
+        <h3>Vault</h3>
+        <div class="code-block">
+            <pre><code># Vault configuration
+export VAULT_ADDR="https://vault.example.com:8200"
+export VAULT_TOKEN="s.abc123..."</code></pre>
+        </div>
+
+        <h3>VMware vSphere</h3>
+        <div class="code-block">
+            <pre><code># vSphere configuration
+export VSPHERE_SERVER="vcenter.example.com"
+export VSPHERE_USERNAME="readonly@vsphere.local"
+export VSPHERE_PASSWORD="password123"
+export VSPHERE_INSECURE="true"</code></pre>
+        </div>
+
+        <h3>Veeam</h3>
+        <div class="code-block">
+            <pre><code># Veeam configuration
+export VBR_SERVER_URL="https://veeam.example.com:9419"
+export VBR_USERNAME="admin"
+export VBR_PASSWORD="password123"
+export VBR_INSECURE="true"</code></pre>
+        </div>
+
+        <h3>Terraform</h3>
+        <div class="code-block">
+            <pre><code># AWS region for Terraform S3 backend
+export AWS_REGION="us-east-1"</code></pre>
+        </div>
+
+        <h2>Web Server</h2>
+
+        <p>The kollect web interface runs on <strong>port 8080</strong> by default and cannot be changed. It automatically opens in your browser when you run kollect with any inventory collection.</p>
+
+        <div class="code-block">
+            <pre><code># Web interface will be available at:
+http://localhost:8080</code></pre>
+        </div>
+
+        <h2>Cloud Provider Authentication</h2>
+
+        <p>Kollect automatically uses your existing cloud CLI configurations:</p>
+
+        <div class="info">
+            <h4>Automatic Authentication</h4>
+            <ul>
+                <li><strong>AWS:</strong> Uses AWS CLI profiles (~/.aws/credentials) and IAM roles</li>
+                <li><strong>Azure:</strong> Uses Azure CLI authentication (az login)</li>
+                <li><strong>GCP:</strong> Uses gcloud authentication and service account keys</li>
+                <li><strong>Kubernetes:</strong> Uses kubectl configuration (~/.kube/config)</li>
+                <li><strong>Docker:</strong> Uses local Docker daemon connection</li>
+            </ul>
+        </div>
+
+        <h2>Example Workflows</h2>
+
+        <h3>Quick Start - Discover Everything</h3>
+        <div class="code-block">
+            <pre><code># Discover all platforms you have configured
+./kollect --inventory all</code></pre>
+        </div>
+
+        <h3>Kubernetes Only</h3>
+        <div class="code-block">
+            <pre><code># Focus on Kubernetes cluster
+./kollect --inventory kubernetes --kubeconfig ~/.kube/prod-config</code></pre>
+        </div>
+
+        <h3>Multi-Cloud Discovery</h3>
+        <div class="code-block">
+            <pre><code># Discover AWS, Azure, and GCP resources
+./kollect --inventory aws,azure,gcp</code></pre>
+        </div>
+
+        <h3>Terraform State Analysis</h3>
+        <div class="code-block">
+            <pre><code># Local state file
+./kollect --inventory terraform --terraform-state ./terraform.tfstate
+
+# Remote S3 backend
+./kollect --inventory terraform --terraform-s3 mybucket/prod.tfstate --terraform-s3-region us-west-2</code></pre>
+        </div>
+
+        <h3>vSphere Environment</h3>
+        <div class="code-block">
+            <pre><code># Connect to vCenter
+export VSPHERE_SERVER="vcenter.company.com"
+export VSPHERE_USERNAME="readonly@vsphere.local"
+export VSPHERE_PASSWORD="secretpassword"
+./kollect --inventory vsphere --vsphere-insecure</code></pre>
+        </div>
+
+        <h3>Snapshot Discovery</h3>
+        <div class="code-block">
+            <pre><code># Find orphaned snapshots across all platforms
+./kollect --snapshots</code></pre>
+        </div>
+
+        <h3>Data Export</h3>
+        <div class="code-block">
+            <pre><code># Collect data and save to file
+./kollect --inventory all --output infrastructure-audit.json</code></pre>
+        </div>
+
+        <div class="warning">
+            <h4>🔒 Security Best Practices</h4>
+            <ul>
+                <li>Use environment variables for passwords and tokens instead of command-line flags</li>
+                <li>Create read-only service accounts and users for kollect</li>
+                <li>Use IAM roles and managed identities when possible</li>
+                <li>Never store credentials in scripts or version control</li>
+            </ul>
+        </div>
+
+        <footer class="doc-footer">
+            <p>
+                <a href="getting-started.html">← Getting Started</a> |
+                <a href="api.html">API Reference →</a>
+            </p>
+        </footer>
+    </main>
+</body>
+</html>
