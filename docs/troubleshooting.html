@@ -4,17 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Troubleshooting - Kollect</title>
+    <script>
+        (function () {
+            var t;
+            try { t = localStorage.getItem('theme'); } catch (e) { t = null; }
+            if (t !== 'dark' && t !== 'light') {
+                t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../assets/style.css" rel="stylesheet">
     <style>
-        .doc-content { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-        .doc-nav { background: var(--bg-light); padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
-        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; color: var(--text-light); }
+        .doc-content { max-width: 820px; margin: 0 auto; padding: 2rem 1rem 1rem; }
+        .doc-nav { background: var(--bg-light); padding: 1rem 0; border-bottom: 1px solid var(--border-color); margin-top: 64px; }
+        .doc-content h2 { margin-top: 2.25rem; margin-bottom: .75rem; }
+        .doc-content h3 { margin-top: 1.5rem; }
+        .doc-content ul, .doc-content ol { padding-left: 1.5rem; }
+        .breadcrumb { display: flex; align-items: center; gap: .5rem; color: var(--text-light); flex-wrap: wrap; }
         .breadcrumb a { color: var(--primary-color); text-decoration: none; }
-        .code-block { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 1.5rem; margin: 1rem 0; overflow-x: auto; }
-        .warning { background: #fef3cd; border: 1px solid #fecb6b; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
-        .info { background: #cff4fc; border: 1px solid #9eeaf9; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
-        .error { background: #fce8e6; border: 1px solid #e74c3c; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+        .code-block { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: .5rem; padding: 1.25rem; margin: 1rem 0; overflow-x: auto; }
+        .code-block pre { margin: 0; }
+        pre code, .code-block code { font-family: 'Monaco','Menlo','Ubuntu Mono',monospace; color: var(--text-color); }
+        .doc-content :not(pre) > code { background: var(--bg-light); padding: .15rem .4rem; border-radius: .25rem; border: 1px solid var(--border-color); font-size: .9em; }
+        .info, .warning, .error { border-radius: .5rem; padding: 1rem 1.25rem; margin: 1rem 0; border: 1px solid; }
+        .info { background: var(--info-bg); border-color: var(--info-border); }
+        .warning { background: var(--warning-bg); border-color: var(--warning-border); }
+        .error { background: var(--error-bg); border-color: var(--error-border); }
+        .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+        .doc-footer a { color: var(--primary-color); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -22,13 +41,17 @@
         <nav class="nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <i class="fas fa-search-plus"></i>
-                    <span>Kollect</span>
+                    <a href="../index.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+                        <img src="../assets/Kollect.png" class="site-logo" data-logo-light="../assets/Kollect.png" data-logo-dark="../assets/dark_Kollect.png" alt="Kollect" style="height: 32px; margin-right: 8px;">
+                        <span>Kollect</span>
+                    </a>
                 </div>
                 <ul class="nav-menu">
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="getting-started.html">Docs</a></li>
+                    <li><a href="../stats.html">Stats</a></li>
                     <li><a href="https://github.com/MichaelCade/kollect-web" target="_blank">GitHub</a></li>
+                    <li class="nav-toggle-item"><button class="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button></li>
                 </ul>
             </div>
         </nav>
@@ -48,574 +71,223 @@
 
     <main class="doc-content">
         <h1>Troubleshooting Guide</h1>
-        
-        <p>This guide helps you diagnose and resolve common issues with Kollect discovery and platform connections.</p>
+        <p>Diagnose and resolve common issues with Kollect discovery and platform connections.</p>
 
-        <h2>General Troubleshooting</h2>
+        <h2>Start here</h2>
+        <h3>Check platform connections</h3>
+        <p>See which platforms Kollect can reach:</p>
+        <div class="code-block"><pre><code>curl http://localhost:8080/api/check-credentials</code></pre></div>
 
-        <h3>Check Platform Connections</h3>
-        <p>First, verify which platforms kollect can connect to:</p>
-        <div class="code-block">
-            <pre><code># Check connection status
-curl http://localhost:8080/api/check-credentials</code></pre>
-        </div>
-
-        <h3>Web Interface Not Loading</h3>
-        <p>If the web interface isn't accessible:</p>
-        <div class="code-block">
-            <pre><code># Verify kollect is running on port 8080
-lsof -i :8080
-
-# Or check with netstat
-netstat -tulpn | grep :8080</code></pre>
-        </div>
-
-        <h3>No Data Showing</h3>
-        <p>If kollect starts but shows no data:</p>
+        <h3>No data showing</h3>
         <ol>
-            <li>Ensure you specified an inventory type: <code>./kollect --inventory all</code></li>
-            <li>Check that your cloud CLI tools are configured and authenticated</li>
-            <li>Look for error messages in the terminal output</li>
+            <li>Make sure you specified an inventory type: <code>./kollect --inventory all</code></li>
+            <li>Confirm your cloud CLI tools are configured and authenticated</li>
+            <li>Read the terminal output — collection warnings are printed per platform</li>
+            <li>Or launch <code>./kollect --browser</code> and connect a platform from the UI</li>
         </ol>
 
-        <h2>Platform Connection Issues</h2>
+        <h3>Web interface not loading</h3>
+        <div class="code-block"><pre><code># Is something already on the port?
+lsof -i :8080            # macOS/Linux
+netstat -tulpn | grep :8080
 
-        <h3>AWS Connection Problems</h3>
-        
+# Is kollect running?
+ps aux | grep kollect</code></pre></div>
+
+        <h2>Platform connection issues</h2>
+
+        <h3>AWS</h3>
         <div class="error">
-            <h4>AWS shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
+            <p><strong>AWS shows "Not Connected".</strong></p>
             <ol>
-                <li>Test AWS CLI access:
-                    <div class="code-block">
-                        <pre><code>aws sts get-caller-identity</code></pre>
-                    </div>
-                </li>
-                <li>Verify AWS credentials are configured:
-                    <div class="code-block">
-                        <pre><code>ls ~/.aws/
-cat ~/.aws/credentials</code></pre>
-                    </div>
-                </li>
-                <li>Try running kollect with AWS inventory:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory aws</code></pre>
-                    </div>
-                </li>
+                <li>Test CLI access: <code>aws sts get-caller-identity</code></li>
+                <li>Check credentials exist: <code>ls ~/.aws/</code></li>
+                <li>Try directly: <code>./kollect --inventory aws</code></li>
             </ol>
         </div>
-
         <div class="info">
-            <h4>Required AWS Permissions</h4>
-            <p>Kollect needs read-only permissions for discovery:</p>
-            <div class="code-block">
-                <pre><code># Minimum required permissions
-ec2:Describe*
+            <p><strong>Minimum read-only permissions</strong></p>
+            <div class="code-block"><pre><code>ec2:Describe*
 s3:ListAllMyBuckets
 s3:GetBucket*
 rds:Describe*
 dynamodb:ListTables
-dynamodb:DescribeTable
-efs:DescribeFileSystems</code></pre>
-            </div>
+dynamodb:DescribeTable</code></pre></div>
         </div>
 
-        <h3>Azure Connection Problems</h3>
-
+        <h3>Azure</h3>
         <div class="error">
-            <h4>Azure shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
+            <p><strong>Azure shows "Not Connected".</strong></p>
             <ol>
-                <li>Test Azure CLI access:
-                    <div class="code-block">
-                        <pre><code>az account show</code></pre>
-                    </div>
+                <li>Check the session: <code>az account show</code></li>
+                <li>Log in if needed: <code>az login</code></li>
+                <li>Try directly: <code>./kollect --inventory azure</code></li>
+            </ol>
+        </div>
+
+        <h3>Google Cloud</h3>
+        <div class="error">
+            <p><strong>GCP shows "Not Connected".</strong></p>
+            <ol>
+                <li>Check auth: <code>gcloud auth list</code> / <code>gcloud config get-value project</code></li>
+                <li>Set application-default credentials: <code>gcloud auth application-default login</code></li>
+                <li>Try directly: <code>./kollect --inventory gcp</code></li>
+            </ol>
+        </div>
+
+        <h3>Kubernetes / OpenShift</h3>
+        <div class="error">
+            <p><strong>Kubernetes shows "Not Connected".</strong></p>
+            <ol>
+                <li>Test access: <code>kubectl cluster-info</code> / <code>kubectl get nodes</code></li>
+                <li>Check contexts: <code>kubectl config get-contexts</code></li>
+                <li>Point at a specific config/context:
+                    <div class="code-block"><pre><code>./kollect --inventory kubernetes --kubeconfig ~/.kube/config --kube-context prod</code></pre></div>
                 </li>
-                <li>If not logged in:
-                    <div class="code-block">
-                        <pre><code>az login</code></pre>
-                    </div>
-                </li>
-                <li>Try running kollect with Azure inventory:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory azure</code></pre>
-                    </div>
+            </ol>
+            <p>OpenShift uses the same kubeconfig — collect it with <code>./kollect --inventory openshift</code>.</p>
+        </div>
+
+        <h3>Docker</h3>
+        <div class="error">
+            <p><strong>Docker shows "Not Connected" or "permission denied".</strong></p>
+            <ol>
+                <li>Test the daemon: <code>docker info</code> / <code>docker ps</code></li>
+                <li>On Linux, add your user to the docker group: <code>sudo usermod -aG docker $USER</code> (then log out/in)</li>
+                <li>Point at a specific socket/host:
+                    <div class="code-block"><pre><code>./kollect --inventory docker --docker-host unix:///var/run/docker.sock</code></pre></div>
                 </li>
             </ol>
         </div>
 
-        <h3>Google Cloud Connection Problems</h3>
-
+        <h3>VMware vSphere</h3>
         <div class="error">
-            <h4>GCP shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
+            <p><strong>vSphere shows "Not Connected".</strong></p>
             <ol>
-                <li>Test gcloud access:
-                    <div class="code-block">
-                        <pre><code>gcloud auth list
-gcloud config get-value project</code></pre>
-                    </div>
-                </li>
-                <li>Set application default credentials:
-                    <div class="code-block">
-                        <pre><code>gcloud auth application-default login</code></pre>
-                    </div>
-                </li>
-                <li>Try running kollect with GCP inventory:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory gcp</code></pre>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <h3>Kubernetes Connection Problems</h3>
-
-        <div class="error">
-            <h4>Kubernetes shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
-            <ol>
-                <li>Test kubectl access:
-                    <div class="code-block">
-                        <pre><code>kubectl cluster-info
-kubectl get nodes</code></pre>
-                    </div>
-                </li>
-                <li>Check kubeconfig file:
-                    <div class="code-block">
-                        <pre><code>ls ~/.kube/config
-kubectl config get-contexts</code></pre>
-                    </div>
-                </li>
-                <li>Try with specific kubeconfig:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory kubernetes --kubeconfig ~/.kube/config</code></pre>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <h3>Docker Connection Problems</h3>
-
-        <div class="error">
-            <h4>Docker shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
-            <ol>
-                <li>Test Docker daemon access:
-                    <div class="code-block">
-                        <pre><code>docker info
-docker ps</code></pre>
-                    </div>
-                </li>
-                <li>Check Docker daemon is running:
-                    <div class="code-block">
-                        <pre><code>systemctl status docker</code></pre>
-                    </div>
-                </li>
-                <li>Try with custom Docker host:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory docker --docker-host unix:///var/run/docker.sock</code></pre>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <h3>VMware vSphere Connection Problems</h3>
-
-        <div class="error">
-            <h4>vSphere shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
-            <ol>
-                <li>Test vCenter connectivity:
-                    <div class="code-block">
-                        <pre><code>ping vcenter.example.com
-telnet vcenter.example.com 443</code></pre>
-                    </div>
-                </li>
-                <li>Try connecting with kollect:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory vsphere \
+                <li>Check connectivity: <code>ping vcenter.example.com</code></li>
+                <li>Connect with flags (add <code>--vsphere-insecure</code> for self-signed certs):
+                    <div class="code-block"><pre><code>./kollect --inventory vsphere \
   --vsphere-server vcenter.example.com \
   --vsphere-username readonly@vsphere.local \
-  --vsphere-password yourpassword \
-  --vsphere-insecure</code></pre>
-                    </div>
+  --vsphere-password '******' \
+  --vsphere-insecure</code></pre></div>
                 </li>
-                <li>Use environment variables for credentials:
-                    <div class="code-block">
-                        <pre><code>export VSPHERE_SERVER="vcenter.example.com"
-export VSPHERE_USERNAME="readonly@vsphere.local"
-export VSPHERE_PASSWORD="yourpassword"
-export VSPHERE_INSECURE="true"
-./kollect --inventory vsphere</code></pre>
-                    </div>
-                </li>
+                <li>Or use <code>VSPHERE_SERVER</code> / <code>VSPHERE_USERNAME</code> / <code>VSPHERE_PASSWORD</code> / <code>VSPHERE_INSECURE</code>.</li>
             </ol>
         </div>
 
-        <h3>Terraform Connection Problems</h3>
-
+        <h3>Hyper-V</h3>
         <div class="error">
-            <h4>Terraform shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
+            <p><strong>Hyper-V connection fails or returns an empty body / 500.</strong></p>
             <ol>
-                <li>Check Terraform CLI is installed:
-                    <div class="code-block">
-                        <pre><code>terraform version</code></pre>
-                    </div>
-                </li>
-                <li>For local state file:
-                    <div class="code-block">
-                        <pre><code>ls -la terraform.tfstate
-./kollect --inventory terraform --terraform-state ./terraform.tfstate</code></pre>
-                    </div>
-                </li>
-                <li>For remote S3 backend:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory terraform \
-  --terraform-s3 mybucket/terraform.tfstate \
-  --terraform-s3-region us-east-1</code></pre>
-                    </div>
-                </li>
+                <li>Kollect connects over WinRM. Domain hosts that enforce message encryption need HTTPS: add <code>--hyperv-https</code>.</li>
+                <li>For domain accounts, try Kerberos: <code>--hyperv-auth kerberos</code> (with <code>--hyperv-realm</code> / <code>--hyperv-kdc</code> if discovery fails).</li>
+                <li>To include a failover cluster's nodes, add <code>--hyperv-cluster</code>.</li>
+                <li>Confirm WinRM is enabled on the host (<code>Enable-PSRemoting</code>) and reachable on 5985/5986.</li>
             </ol>
         </div>
 
-        <h3>Vault Connection Problems</h3>
-
+        <h3>Proxmox VE &amp; Nutanix</h3>
         <div class="error">
-            <h4>Vault shows "Not Connected" in web interface</h4>
-            <p><strong>Troubleshooting Steps:</strong></p>
+            <p><strong>Proxmox or Nutanix shows a certificate error.</strong></p>
             <ol>
-                <li>Test Vault connectivity:
-                    <div class="code-block">
-                        <pre><code>curl -k https://vault.example.com:8200/v1/sys/health</code></pre>
-                    </div>
-                </li>
-                <li>Try with environment variables:
-                    <div class="code-block">
-                        <pre><code>export VAULT_ADDR="https://vault.example.com:8200"
+                <li>Both commonly use self-signed certificates — add <code>--proxmox-insecure</code> or <code>--nutanix-insecure</code>.</li>
+                <li>Proxmox accepts either an API token (<code>--proxmox-token user@realm!id=secret</code>) or username/password.</li>
+                <li>Nutanix Prism Element listens on port 9440 by default.</li>
+            </ol>
+        </div>
+
+        <h3>Terraform</h3>
+        <div class="error">
+            <p><strong>Terraform shows "Not Connected".</strong></p>
+            <ol>
+                <li>Local state: <code>./kollect --inventory terraform --terraform-state ./terraform.tfstate</code></li>
+                <li>Remote S3: <code>./kollect --inventory terraform --terraform-s3 mybucket/prod.tfstate --terraform-s3-region us-east-1</code></li>
+            </ol>
+        </div>
+
+        <h3>Vault</h3>
+        <div class="error">
+            <p><strong>Vault shows "Not Connected".</strong></p>
+            <ol>
+                <li>Test health: <code>curl -k https://vault.example.com:8200/v1/sys/health</code></li>
+                <li>Provide address and token via env or flags:
+                    <div class="code-block"><pre><code>export VAULT_ADDR="https://vault.example.com:8200"
 export VAULT_TOKEN="s.abc123..."
-./kollect --inventory vault</code></pre>
-                    </div>
-                </li>
-                <li>Or with command-line flags:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory vault \
-  --vault-addr https://vault.example.com:8200 \
-  --vault-token s.abc123...</code></pre>
-                    </div>
+./kollect --inventory vault</code></pre></div>
                 </li>
             </ol>
         </div>
 
-        <h2>Common Issues</h2>
-
-        <h3>No Data Displayed</h3>
-        
+        <h2>Port 8080 already in use</h2>
         <div class="warning">
-            <h4>Web interface loads but shows no data</h4>
-            <p><strong>Solutions:</strong></p>
+            <p><strong>Error: "bind: address already in use".</strong></p>
             <ol>
-                <li>Make sure you specified an inventory type:
-                    <div class="code-block">
-                        <pre><code>./kollect --inventory all</code></pre>
-                    </div>
-                </li>
-                <li>Check the terminal output for error messages</li>
-                <li>Verify platform connections:
-                    <div class="code-block">
-                        <pre><code>curl http://localhost:8080/api/check-credentials</code></pre>
-                    </div>
-                </li>
-                <li>Try importing existing data:
-                    <div class="code-block">
-                        <pre><code>./kollect --browser</code></pre>
-                    </div>
+                <li>Find the process: <code>lsof -i :8080</code></li>
+                <li>Or simply run Kollect on another port:
+                    <div class="code-block"><pre><code>./kollect --browser --port 9090
+# or: KOLLECT_PORT=9090 ./kollect --browser</code></pre></div>
                 </li>
             </ol>
+            <p>Running a terminal instance and an MCP instance side by side? Give them different ports the same way.</p>
         </div>
 
-        <h3>Port 8080 Already in Use</h3>
-        
-        <div class="error">
-            <h4>Error: "bind: address already in use"</h4>
-            <p><strong>Solutions:</strong></p>
-            <ol>
-                <li>Find what's using port 8080:
-                    <div class="code-block">
-                        <pre><code>lsof -i :8080
-netstat -tulpn | grep :8080</code></pre>
-                    </div>
-                </li>
-                <li>Kill the process using the port:
-                    <div class="code-block">
-                        <pre><code>kill -9 PID_NUMBER</code></pre>
-                    </div>
-                </li>
-                <li>Note: Kollect's port cannot be changed - it's hardcoded to 8080</li>
-            </ol>
-        </div>
-
-        <h2>Network and Connectivity Issues</h2>
-
-        <h3>Connection Timeouts</h3>
-        
-        <div class="warning">
-            <h4>Issue: Discovery operations timing out</h4>
-            <p><strong>Possible causes:</strong></p>
-            <ul>
-                <li>Network connectivity issues</li>
-                <li>Firewall blocking API calls</li>
-                <li>Large number of resources causing timeouts</li>
-            </ul>
-            <p><strong>Solutions:</strong></p>
-            <ol>
-                <li>Increase timeout values:
-                    <div class="code-block">
-                        <pre><code>./kollect -timeout 10m</code></pre>
-                    </div>
-                </li>
-                <li>Reduce concurrent scans:
-                    <div class="code-block">
-                        <pre><code>./kollect -concurrent 2</code></pre>
-                    </div>
-                </li>
-                <li>Test connectivity to cloud APIs:
-                    <div class="code-block">
-                        <pre><code># Test AWS connectivity
-curl -I https://ec2.amazonaws.com
-
-# Test Azure connectivity  
-curl -I https://management.azure.com
-
-# Test GCP connectivity
-curl -I https://compute.googleapis.com</code></pre>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <h3>Proxy Configuration</h3>
-        <p>If you're behind a corporate proxy:</p>
-        <div class="code-block">
-            <pre><code>export HTTP_PROXY=http://proxy.company.com:8080
+        <h2>Network &amp; connectivity</h2>
+        <h3>Behind a corporate proxy</h3>
+        <div class="code-block"><pre><code>export HTTP_PROXY=http://proxy.company.com:8080
 export HTTPS_PROXY=http://proxy.company.com:8080
-export NO_PROXY=localhost,127.0.0.1</code></pre>
-        </div>
+export NO_PROXY=localhost,127.0.0.1</code></pre></div>
 
-        <h2>Performance Issues</h2>
-
-        <h3>Slow Discovery</h3>
-        
-        <div class="info">
-            <h4>Optimizing Discovery Performance</h4>
-            <ol>
-                <li>Increase concurrent operations:
-                    <div class="code-block">
-                        <pre><code>export KOLLECT_CONCURRENT_SCANS=10</code></pre>
-                    </div>
-                </li>
-                <li>Limit regions/projects:
-                    <div class="code-block">
-                        <pre><code>export KOLLECT_AWS_REGIONS="us-east-1,us-west-2"
-export KOLLECT_GCP_PROJECTS="project1,project2"</code></pre>
-                    </div>
-                </li>
-                <li>Filter resource types:
-                    <div class="code-block">
-                        <pre><code>export KOLLECT_AWS_SERVICES="ec2,s3,rds"</code></pre>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <h3>High Memory Usage</h3>
-        <p>For large infrastructures, Kollect may consume significant memory:</p>
-        <ul>
-            <li>Process smaller regions/projects separately</li>
-            <li>Enable result streaming (if available)</li>
-            <li>Increase system memory or use a larger instance</li>
-        </ul>
-
-        <h2>Docker Issues</h2>
-
-        <h3>Docker Socket Permission Denied</h3>
-        
-        <div class="error">
-            <h4>Error: "permission denied while connecting to Docker daemon socket"</h4>
-            <p><strong>Solution:</strong></p>
-            <ol>
-                <li>Add user to docker group:
-                    <div class="code-block">
-                        <pre><code>sudo usermod -aG docker $USER
-# Logout and login again</code></pre>
-                    </div>
-                </li>
-                <li>Or run with sudo:
-                    <div class="code-block">
-                        <pre><code>sudo ./kollect</code></pre>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <h2>Kubernetes Issues</h2>
-
-        <h3>Kubeconfig Not Found</h3>
-        
-        <div class="error">
-            <h4>Error: "kubeconfig not found"</h4>
-            <p><strong>Solution:</strong></p>
-            <ol>
-                <li>Verify kubeconfig exists:
-                    <div class="code-block">
-                        <pre><code>ls -la ~/.kube/config</code></pre>
-                    </div>
-                </li>
-                <li>Test kubectl access:
-                    <div class="code-block">
-                        <pre><code>kubectl cluster-info</code></pre>
-                    </div>
-                </li>
-                <li>Set custom kubeconfig path:
-                    <div class="code-block">
-                        <pre><code>export KUBECONFIG=/path/to/your/kubeconfig</code></pre>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <h2>Web Interface Issues</h2>
-
-        <h3>Web Interface Not Loading</h3>
-        
-        <div class="warning">
-            <h4>Issue: Cannot access http://localhost:8080</h4>
-            <p><strong>Troubleshooting steps:</strong></p>
-            <ol>
-                <li>Check if Kollect is running:
-                    <div class="code-block">
-                        <pre><code>ps aux | grep kollect</code></pre>
-                    </div>
-                </li>
-                <li>Verify port is available:
-                    <div class="code-block">
-                        <pre><code>netstat -tulpn | grep :8080</code></pre>
-                    </div>
-                </li>
-                <li>Try different port:
-                    <div class="code-block">
-                        <pre><code>./kollect -port 9090</code></pre>
-                    </div>
-                </li>
-                <li>Check firewall settings</li>
-            </ol>
-        </div>
-
-        <h3>API Returning Empty Data</h3>
-        
-        <div class="info">
-            <h4>Possible causes:</h4>
-            <ul>
-                <li>Discovery still in progress</li>
-                <li>Authentication issues preventing data collection</li>
-                <li>No resources found in configured regions/projects</li>
-                <li>Filters excluding all resources</li>
-            </ul>
-            <p><strong>Check discovery status:</strong></p>
-            <div class="code-block">
-                <pre><code>curl http://localhost:8080/api/status</code></pre>
-            </div>
-        </div>
-
-        <h2>Common Configuration Mistakes</h2>
-
-        <h3>Wrong Region Configuration</h3>
-        <div class="code-block">
-            <pre><code># Wrong - using unavailable region
-export KOLLECT_AWS_REGIONS="us-east-3"
-
-# Correct - using valid region
-export KOLLECT_AWS_REGIONS="us-east-1"</code></pre>
-        </div>
-
-        <h3>Incorrect Environment Variables</h3>
-        <div class="code-block">
-            <pre><code># Check current environment variables
-env | grep -E "(AWS|AZURE|GOOGLE|KOLLECT)"
-
-# Clear conflicting variables if needed
-unset AZURE_CLIENT_ID</code></pre>
-        </div>
-
-        <h2>Getting Help</h2>
-
-        <h3>Enable Debug Mode</h3>
-        <div class="code-block">
-            <pre><code># Run with maximum logging
-export KOLLECT_LOG_LEVEL=debug
-./kollect -verbose</code></pre>
-        </div>
-
-        <h3>Collect Diagnostic Information</h3>
-        <div class="code-block">
-            <pre><code># System information
-uname -a
-./kollect -version
-
-# Network connectivity
-curl -I https://ec2.amazonaws.com
+        <h3>Test connectivity to cloud APIs</h3>
+        <div class="code-block"><pre><code>curl -I https://ec2.amazonaws.com
 curl -I https://management.azure.com
-
-# Environment variables
-env | grep -E "(AWS|AZURE|GOOGLE)" | sed 's/=.*/=***REDACTED***/'</code></pre>
-        </div>
-
-        <h3>Community Support</h3>
-        <ul>
-            <li><a href="https://github.com/MichaelCade/kollect/issues" target="_blank">GitHub Issues</a> - Report bugs and request features</li>
-            <li><a href="https://github.com/MichaelCade/kollect/discussions" target="_blank">GitHub Discussions</a> - Ask questions and share solutions</li>
-            <li>Check existing <a href="https://github.com/MichaelCade/kollect/wiki" target="_blank">documentation</a> and wiki</li>
-        </ul>
-
-        <div class="info">
-            <p><strong>When reporting issues:</strong></p>
-            <ul>
-                <li>Include Kollect version and OS information</li>
-                <li>Provide error messages and logs</li>
-                <li>Describe steps to reproduce the issue</li>
-                <li>Remove sensitive information (credentials, IPs, etc.)</li>
-            </ul>
-        </div>
+curl -I https://compute.googleapis.com</code></pre></div>
 
         <h2>FAQ</h2>
+        <h3>Does Kollect store my data or credentials?</h3>
+        <p>No. Kollect never persists credentials, and inventory data is held in memory only — it is not written to disk unless you use <code>--output</code> or export from the browser.</p>
 
-        <h3>Q: Why is discovery taking so long?</h3>
-        <p>A: Large infrastructures with many resources can take time to scan. Try limiting regions/projects, increasing concurrent scans, or filtering resource types.</p>
+        <h3>Is Kollect read-only?</h3>
+        <p>Yes. Kollect only performs read operations. Use least-privilege, read-only accounts.</p>
 
-        <h3>Q: Can I run Kollect in read-only mode?</h3>
-        <p>A: Yes, Kollect only performs read operations. Ensure your credentials have only read permissions for security.</p>
+        <h3>Can I run multiple instances?</h3>
+        <p>Yes — give each one a different port with <code>--port</code> (or <code>KOLLECT_PORT</code>), and be mindful of cloud-provider API rate limits.</p>
 
-        <h3>Q: Does Kollect store my data?</h3>
-        <p>A: Kollect stores discovery results in memory during operation. Data is not persisted unless you explicitly export it.</p>
+        <h3>How do I collect diagnostic info for a bug report?</h3>
+        <div class="code-block"><pre><code>uname -a
+./kollect --help          # confirm the flags available in your build
+curl http://localhost:8080/api/check-credentials</code></pre></div>
+        <div class="info">
+            <p>When reporting an issue, include your OS, the exact command you ran, the terminal output (with credentials/IPs redacted), and steps to reproduce.</p>
+        </div>
 
-        <h3>Q: Can I run multiple instances of Kollect?</h3>
-        <p>A: Yes, but use different ports and be mindful of API rate limits from cloud providers.</p>
+        <h3>Community support</h3>
+        <ul>
+            <li><a href="https://github.com/MichaelCade/kollect/issues" target="_blank">GitHub Issues</a> — report bugs and request features</li>
+            <li><a href="https://github.com/MichaelCade/kollect" target="_blank">Project repository</a> — README and roadmap</li>
+        </ul>
+
+        <div class="doc-footer">
+            <p><a href="api.html">← API Reference</a> &nbsp;|&nbsp; <a href="getting-started.html">Getting Started →</a></p>
+        </div>
     </main>
 
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <i class="fas fa-search-plus"></i>
+                    <img src="../assets/Kollect.png" class="site-logo" data-logo-light="../assets/Kollect.png" data-logo-dark="../assets/dark_Kollect.png" alt="Kollect" style="height: 24px; margin-right: 8px;">
                     <span>Kollect</span>
                 </div>
                 <div class="footer-links">
-                    <a href="https://github.com/MichaelCade/kollect">GitHub</a>
+                    <a href="https://github.com/MichaelCade/kollect-web">GitHub</a>
                     <a href="../index.html">Home</a>
+                    <a href="../stats.html">Stats</a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <script src="../assets/theme.js"></script>
 </body>
 </html>

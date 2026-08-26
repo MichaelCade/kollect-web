@@ -6,13 +6,73 @@
     --text-light: #6b7280;
     --bg-color: #ffffff;
     --bg-light: #f9fafb;
+    --bg-card: #ffffff;
     --border-color: #e5e7eb;
     --success-color: #10b981;
     --warning-color: #f59e0b;
     --error-color: #ef4444;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --hero-gradient: linear-gradient(135deg, var(--bg-light) 0%, rgba(37, 99, 235, 0.05) 100%);
+    --footer-bg: #1f2937;
+    /* Doc callout boxes */
+    --info-bg: #cff4fc;
+    --info-border: #9eeaf9;
+    --warning-bg: #fef3cd;
+    --warning-border: #fecb6b;
+    --error-bg: #fce8e6;
+    --error-border: #e74c3c;
+    --header-bg: rgba(255, 255, 255, 0.95);
+    --mini-btn-bg: #eef2f7;
 }
+
+/* Dark theme — applied both when the OS prefers dark (and the user hasn't
+   explicitly chosen light) and when data-theme="dark" is set by the toggle. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --text-color: #e7ebf0;
+        --text-light: #9aa4b2;
+        --bg-color: #0f1115;
+        --bg-light: #171a21;
+        --bg-card: #1a1e27;
+        --border-color: #2a2f3a;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25);
+        --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+        --hero-gradient: linear-gradient(135deg, #171a21 0%, rgba(37, 99, 235, 0.12) 100%);
+        --footer-bg: #0b0d11;
+        --info-bg: #10303a;
+        --info-border: #1d5566;
+        --warning-bg: #3a3115;
+        --warning-border: #6b5a1f;
+        --error-bg: #3a1e1e;
+        --error-border: #7a2e2e;
+        --header-bg: rgba(15, 17, 21, 0.95);
+        --mini-btn-bg: #262c38;
+    }
+}
+
+:root[data-theme="dark"] {
+    --text-color: #e7ebf0;
+    --text-light: #9aa4b2;
+    --bg-color: #0f1115;
+    --bg-light: #171a21;
+    --bg-card: #1a1e27;
+    --border-color: #2a2f3a;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    --hero-gradient: linear-gradient(135deg, #171a21 0%, rgba(37, 99, 235, 0.12) 100%);
+    --footer-bg: #0b0d11;
+    --info-bg: #10303a;
+    --info-border: #1d5566;
+    --warning-bg: #3a3115;
+    --warning-border: #6b5a1f;
+    --error-bg: #3a1e1e;
+    --error-border: #7a2e2e;
+    --header-bg: rgba(15, 17, 21, 0.95);
+    --mini-btn-bg: #262c38;
+}
+
+html { color-scheme: light dark; }
 
 * {
     margin: 0;
@@ -88,7 +148,7 @@ body {
 /* Hero Section */
 .hero {
     padding: 8rem 0 4rem;
-    background: linear-gradient(135deg, var(--bg-light) 0%, rgba(37, 99, 235, 0.05) 100%);
+    background: var(--hero-gradient);
 }
 
 .hero .container {
@@ -155,7 +215,7 @@ body {
 
 /* Dashboard Preview */
 .dashboard-preview {
-    background: white;
+    background: var(--bg-card);
     border-radius: 1rem;
     padding: 1.5rem;
     box-shadow: var(--shadow-lg);
@@ -201,22 +261,109 @@ body {
     50% { opacity: 0.5; }
 }
 
-.cloud-icons {
+/* Mini dashboard mockup — mirrors the real app's inventory-lane layout:
+   labeled lanes of neutral rounded logo buttons + a tools row. The logo set is
+   white monochrome, so (as the app does) filter it dark-on-light / white-on-dark. */
+.mini-lanes {
+    display: flex;
+    flex-direction: column;
+}
+
+.mini-lane {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    text-align: center;
+    grid-template-columns: 96px 1fr;
+    align-items: center;
+    padding: 7px 0;
 }
 
-.cloud-icons i {
-    font-size: 2.5rem;
+.mini-lane + .mini-lane {
+    border-top: 1px solid var(--border-color);
+}
+
+.mini-lane-label {
+    text-align: right;
+    padding-right: 12px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     color: var(--text-light);
-    transition: color 0.3s, transform 0.3s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.cloud-icons i:hover {
+.mini-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.mini-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mini-btn-bg);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s;
+}
+
+.mini-btn:hover {
+    transform: translateY(-2px);
+}
+
+.mini-btn img {
+    width: 19px;
+    height: 19px;
+    object-fit: contain;
+    /* Default (light theme): darken the white logos so they read on light tiles. */
+    filter: brightness(0.2) contrast(1.2);
+}
+
+:root[data-theme="dark"] .mini-btn img {
+    filter: none;
+}
+
+/* Full-colour logos flattened to a silhouette to match the white icon set. */
+.mini-btn img.logo-mono {
+    filter: brightness(0);
+}
+
+:root[data-theme="dark"] .mini-btn img.logo-mono {
+    filter: brightness(0) invert(1);
+}
+
+.mini-btn.soon {
+    opacity: 0.4;
+}
+
+.mini-tools {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.mini-tool {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mini-btn-bg);
+    border: 1px solid var(--border-color);
     color: var(--primary-color);
-    transform: scale(1.1);
+    font-size: 14px;
+}
+
+.mini-tool.soon {
+    opacity: 0.4;
 }
 
 /* Features Section */
@@ -240,7 +387,7 @@ body {
 }
 
 .feature-card {
-    background: white;
+    background: var(--bg-card);
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: var(--shadow);
@@ -304,7 +451,7 @@ body {
     text-align: center;
     margin-bottom: 3rem;
     padding: 2rem;
-    background: white;
+    background: var(--bg-card);
     border-radius: 1rem;
     box-shadow: var(--shadow);
 }
@@ -326,7 +473,7 @@ body {
 }
 
 .download-item {
-    background: white;
+    background: var(--bg-card);
     padding: 1.5rem;
     border-radius: 0.5rem;
     box-shadow: var(--shadow);
@@ -351,7 +498,7 @@ body {
 }
 
 .installation {
-    background: white;
+    background: var(--bg-card);
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: var(--shadow);
@@ -428,7 +575,7 @@ body {
 }
 
 .doc-card {
-    background: white;
+    background: var(--bg-card);
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: var(--shadow);
@@ -472,7 +619,7 @@ body {
 
 /* Footer */
 .footer {
-    background: var(--text-color);
+    background: var(--footer-bg);
     color: white;
     padding: 3rem 0 1rem;
 }
@@ -588,8 +735,8 @@ body {
 }
 
 .badge-logo {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     object-fit: contain;
 }
 
@@ -633,3 +780,215 @@ body {
 .platform-badge.snapshots {
     background: linear-gradient(135deg, #6C757D, #5A6268);
 }
+
+.platform-badge.mcp {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+}
+
+.platform-badge.mapper {
+    background: linear-gradient(135deg, #0ea5e9, #0369a1);
+}
+
+.platform-badge.scenario {
+    background: linear-gradient(135deg, #00b336, #007a24);
+}
+
+/* Muted badge for platforms that are on the roadmap but not yet shipped.
+   A solid slate fill (not transparent) so the white monochrome logos stay
+   visible; the whole badge is dimmed to read as "not yet available". */
+.platform-badge.soon {
+    background: linear-gradient(135deg, #64748b, #475569);
+    color: #fff;
+    opacity: 0.72;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.soon-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.05rem 0.3rem;
+    border-radius: 0.4rem;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Capability card for a not-yet-shipped feature: mute the icon so the
+   "Coming soon" badge is not the only signal, without dimming the text. */
+.feature-card.is-soon .feature-icon {
+    background: linear-gradient(135deg, #64748b, #475569);
+    opacity: 0.8;
+}
+
+/* ── Theme toggle ─────────────────────────────────────────────────────── */
+.nav-menu { align-items: center; }
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-light);
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.theme-toggle:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+/* On mobile the nav links collapse, but keep the theme toggle reachable. */
+@media (max-width: 768px) {
+    .nav-menu { display: flex; gap: 1rem; }
+    .nav-menu li:not(.nav-toggle-item) { display: none; }
+}
+
+/* ── Platform lanes (home page feature grouping) ──────────────────────── */
+.platform-lanes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.platform-lane {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.75rem;
+    box-shadow: var(--shadow);
+}
+
+.platform-lane-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.platform-lane-head .lane-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: none;
+    border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: #fff;
+}
+
+.platform-lane-head h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.platform-lane .platform-badges {
+    justify-content: flex-start;
+    margin: 0;
+}
+
+.section-note {
+    text-align: center;
+    color: var(--text-light);
+    max-width: 640px;
+    margin: -1.5rem auto 2.5rem;
+}
+
+/* ── Capabilities row (tools: Snapshot Hunter, Cost Explorer, …) ──────── */
+.capabilities {
+    padding: 4rem 0;
+    background: var(--bg-light);
+}
+
+.capabilities h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: var(--text-color);
+}
+
+/* ── Stats page ───────────────────────────────────────────────────────── */
+.stats-main { padding: 7rem 0 4rem; min-height: 70vh; }
+.stats-main h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+.stats-sub { color: var(--text-light); margin-bottom: 2.5rem; }
+
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.stat-card .stat-label {
+    color: var(--text-light);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.35rem;
+    color: var(--text-color);
+}
+
+.stat-card .stat-value.small { font-size: 1.3rem; }
+.stat-card .stat-sub { display: block; font-size: 0.8rem; color: var(--text-light); margin-top: 0.2rem; }
+
+.stats-section { margin-bottom: 2.5rem; }
+.stats-section h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+
+.stats-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.bar-row { display: grid; grid-template-columns: 130px 1fr 64px; align-items: center; gap: 0.75rem; margin: 0.5rem 0; }
+.bar-row .bar-name { color: var(--text-light); font-size: 0.85rem; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { background: var(--bg-light); border-radius: 6px; height: 22px; overflow: hidden; border: 1px solid var(--border-color); }
+.bar-fill { height: 100%; border-radius: 6px 0 0 6px; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); min-width: 2px; transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.bar-row .bar-num { font-weight: 600; font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+
+.stats-table-scroll { overflow-x: auto; }
+.stats-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.stats-table th, .stats-table td { text-align: right; padding: 0.5rem 0.7rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.stats-table th:first-child, .stats-table td:first-child { text-align: left; position: sticky; left: 0; background: var(--bg-card); }
+.stats-table thead th { color: var(--text-light); font-weight: 600; border-bottom: 1px solid var(--border-color); font-size: 0.78rem; vertical-align: bottom; }
+.stats-table thead th .os { display: block; text-transform: capitalize; color: var(--text-color); }
+.stats-table thead th .arch { display: block; font-weight: 500; opacity: 0.7; font-size: 0.72rem; }
+.stats-table tbody tr { border-bottom: 1px solid var(--border-color); }
+.stats-table tbody tr:last-child { border-bottom: none; }
+.stats-table td.total { font-weight: 700; color: var(--primary-color); }
+.stats-table .zero { color: var(--text-light); opacity: 0.45; }
+.stats-note { color: var(--text-light); font-size: 0.8rem; margin-top: 0.75rem; }
+
+.stats-error {
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
+    color: var(--error-color);
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+}
+.stats-error code { background: var(--bg-light); padding: 1px 6px; border-radius: 5px; }

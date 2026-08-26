@@ -100,26 +100,30 @@ function showFallbackRelease() {
     
     releaseInfo.innerHTML = `
         <div class="release-header">
-            <h3>Latest Release: 0.1.1</h3>
-            <p class="release-date">Released on October 29, 2025</p>
-            <p class="api-note"><i class="fas fa-info-circle"></i> Showing cached release info. Visit <a href="https://github.com/MichaelCade/kollect-web/releases" target="_blank">releases page</a> for the most current version.</p>
+            <h3>Latest Release: 0.1.18</h3>
+            <p class="release-date">Released on August 24, 2026</p>
+            <p class="api-note"><i class="fas fa-info-circle"></i> Showing cached release info (the GitHub API may be rate-limited). Visit the <a href="https://github.com/MichaelCade/kollect-web/releases" target="_blank">releases page</a> for the most current version.</p>
         </div>
         <div class="release-notes">
             <h4>Release Notes</h4>
-            <div class="release-body">Fixed some missing web files.<br><br>---<br><br><em>This release was automatically synced from the private kollect repository.</em></div>
+            <div class="release-body">The latest Kollect build with the newest platform integrations and fixes.<br><br>---<br><br><em>Releases are automatically synced from the private kollect repository.</em></div>
         </div>
     `;
-    
-    // Show download links for known assets
+
+    // Known assets for the current release, shown only when the live GitHub
+    // API call fails (e.g. anonymous rate limit). Keep in sync with the latest
+    // release; the live fetch above is the primary source of truth.
+    const fallbackVersion = '0.1.18';
+    const base = `https://github.com/MichaelCade/kollect-web/releases/download/${fallbackVersion}`;
     const fallbackAssets = [
-        { name: 'kollect-darwin-amd64', size: 126099456, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-darwin-amd64' },
-        { name: 'kollect-darwin-arm64', size: 122486784, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-darwin-arm64' },
-        { name: 'kollect-linux-386', size: 116959232, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-linux-386' },
-        { name: 'kollect-linux-amd64', size: 124403712, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-linux-amd64' },
-        { name: 'kollect-linux-arm64', size: 119865344, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-linux-arm64' },
-        { name: 'kollect-windows-386.exe', size: 119558144, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-windows-386.exe' },
-        { name: 'kollect-windows-amd64.exe', size: 125679616, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-windows-amd64.exe' },
-        { name: 'kollect-windows-arm64.exe', size: 119901184, browser_download_url: 'https://github.com/MichaelCade/kollect-web/releases/download/0.1.1/kollect-windows-arm64.exe' }
+        { name: 'kollect-darwin-amd64', size: 154992400, browser_download_url: `${base}/kollect-darwin-amd64` },
+        { name: 'kollect-darwin-arm64', size: 147069042, browser_download_url: `${base}/kollect-darwin-arm64` },
+        { name: 'kollect-linux-386', size: 140373755, browser_download_url: `${base}/kollect-linux-386` },
+        { name: 'kollect-linux-amd64', size: 149547181, browser_download_url: `${base}/kollect-linux-amd64` },
+        { name: 'kollect-linux-arm64', size: 140215715, browser_download_url: `${base}/kollect-linux-arm64` },
+        { name: 'kollect-windows-386.exe', size: 143626752, browser_download_url: `${base}/kollect-windows-386.exe` },
+        { name: 'kollect-windows-amd64.exe', size: 151039488, browser_download_url: `${base}/kollect-windows-amd64.exe` },
+        { name: 'kollect-windows-arm64.exe', size: 140506624, browser_download_url: `${base}/kollect-windows-arm64.exe` }
     ];
     
     const downloads = createDownloadLinks(fallbackAssets);
@@ -190,13 +194,13 @@ function formatDate(dateString) {
 function formatReleaseNotes(body) {
     if (!body) return '<p>No release notes available.</p>';
     
-    // Convert markdown-style formatting to HTML
+    // Convert markdown-style formatting to HTML. Headings are matched at the
+    // start of a line and tolerate a missing space after the # markers.
     let formatted = body
-        .replace(/### (.*)/g, '<h5>$1</h5>')
-        .replace(/## (.*)/g, '<h4>$1</h4>')
-        .replace(/# (.*)/g, '<h3>$1</h3>')
+        .replace(/^\s*#{3}\s*(.*)$/gm, '<h5>$1</h5>')
+        .replace(/^\s*#{2}\s*(.*)$/gm, '<h4>$1</h4>')
+        .replace(/^\s*#{1}\s*(.*)$/gm, '<h3>$1</h3>')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/`(.*?)`/g, '<code>$1</code>')
         .replace(/\n/g, '<br>');
     
@@ -206,8 +210,9 @@ function formatReleaseNotes(body) {
 // Add some interactive effects
 document.addEventListener('scroll', function() {
     const header = document.querySelector('.header');
+    if (!header) return;
     if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
+        header.style.background = 'var(--header-bg)';
         header.style.backdropFilter = 'blur(10px)';
     } else {
         header.style.background = 'var(--bg-color)';
