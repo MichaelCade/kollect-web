@@ -1,35 +1,41 @@
 # Kollect Web
 
-This repository hosts the public website and release distribution for [Kollect](https://github.com/MichaelCade/kollect), a multi-cloud infrastructure discovery tool.
+This repository hosts the public website and release distribution for [Kollect](https://github.com/MichaelCade/kollect), a multi-cloud and infrastructure discovery tool. Binaries are synced here automatically from the (private) main repository so they can be downloaded without access to the source.
 
 ## 🌐 Website
 
-Visit the live website at: [https://michaelcade.github.io/kollect-web](https://michaelcade.github.io/kollect-web)
+Live at: [https://kollect.upthestack.io](https://kollect.upthestack.io)
 
 ## 📦 Downloads
 
-Get the latest releases for your platform:
+Binaries are published on the [releases page](https://github.com/MichaelCade/kollect-web/releases). Each release includes:
 
-- **Linux**: `kollect-linux`
-- **Windows**: `kollect-windows.exe`
-- **macOS**: `kollect-darwin`
+| OS | amd64 | arm64 | 386 |
+|----|-------|-------|-----|
+| Linux | `kollect-linux-amd64` | `kollect-linux-arm64` | `kollect-linux-386` |
+| macOS | `kollect-darwin-amd64` | `kollect-darwin-arm64` | — |
+| Windows | `kollect-windows-amd64.exe` | `kollect-windows-arm64.exe` | `kollect-windows-386.exe` |
 
 ## 🚀 Quick Start
 
-### Linux/macOS
+### Linux
 ```bash
-# Download the binary
-curl -L -o kollect https://github.com/MichaelCade/kollect/releases/latest/download/kollect-linux
+curl -L -o kollect https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-linux-amd64
 chmod +x kollect
-
-# Run discovery
-./kollect
+./kollect --browser
 ```
 
-### Windows
+### macOS (Apple Silicon; use `kollect-darwin-amd64` for Intel)
+```bash
+curl -L -o kollect https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-darwin-arm64
+chmod +x kollect
+./kollect --browser
+```
+
+### Windows (PowerShell)
 ```powershell
-# Download kollect-windows.exe and run
-kollect-windows.exe
+Invoke-WebRequest -Uri "https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-windows-amd64.exe" -OutFile "kollect.exe"
+.\kollect.exe --browser
 ```
 
 ## 📖 Documentation
@@ -38,38 +44,42 @@ kollect-windows.exe
 - [Configuration](docs/configuration.html)
 - [API Reference](docs/api.html)
 - [Troubleshooting](docs/troubleshooting.html)
+- [Download Stats](stats.html)
 
-## 🔧 Features
+## 🔧 What Kollect discovers
 
-Kollect automatically discovers and inventories resources across:
+Grouped the way the app presents them:
 
-- **AWS**: EC2, S3, RDS, DynamoDB, VPCs, EFS
-- **Azure**: VMs, Storage Accounts, Blob Containers, Virtual Networks
-- **Google Cloud**: Compute Instances, Cloud Storage, Cloud SQL
-- **VMware vSphere**: VMs, Datastores, Clusters
-- **Docker**: Containers, Images, Volumes, Networks
-- **Kubernetes**: Clusters, Pods, Services, Deployments
+- **Cloud** — AWS, Azure, GCP (Oracle Cloud coming soon)
+- **Cloud-Native** — Kubernetes, Red Hat OpenShift, Docker
+- **DevOps** — Terraform, HashiCorp Vault (GitHub, Azure DevOps, Jira, Confluence coming soon)
+- **Virtualization** — VMware vSphere, Microsoft Hyper-V, Proxmox VE, Nutanix AHV (HPE, XCP-ng, OpenStack coming soon)
 
-## 🏗️ Repository Structure
+Plus cross-cutting capabilities: **Snapshot Hunter**, **Cost Explorer**, **Platform Mapper**, a native **MCP server** for AI tools, and **Veeam Scenario Builder** CSV export.
+
+## 🏗️ Repository structure
 
 ```
 kollect-web/
-├── index.html              # Main landing page
+├── index.html              # Landing page
+├── stats.html              # Live download-stats page
 ├── assets/                 # CSS, JS, images
-│   ├── style.css
-│   └── script.js
+│   ├── style.css           # Styles + light/dark theme tokens
+│   ├── script.js           # Landing-page release/download logic
+│   ├── stats.js            # Stats page (live GitHub API fetch)
+│   └── theme.js            # Shared light/dark theme toggle
 ├── docs/                   # Documentation pages
-├── releases/               # Release binaries (auto-updated)
-└── _config.yml            # GitHub Pages configuration
+├── releases/               # Release metadata (auto-synced)
+└── _config.yml             # GitHub Pages configuration
 ```
 
-## 🤖 Automated Updates
+## 🎨 Theme
 
-This repository is automatically updated when new releases are published in the main Kollect repository through GitHub Actions.
+The site follows the visitor's OS light/dark preference on first visit; a header toggle overrides it and the choice is remembered.
 
-## 📄 License
+## 🤖 Automated updates
 
-This project is open source. See the main [Kollect repository](https://github.com/MichaelCade/kollect) for license information.
+Releases and binaries are synced here automatically when a new version is published in the main Kollect repository via GitHub Actions.
 
 ## 🔗 Links
 

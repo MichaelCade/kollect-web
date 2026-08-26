@@ -4,20 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuration - Kollect</title>
+    <script>
+        (function () {
+            var t;
+            try { t = localStorage.getItem('theme'); } catch (e) { t = null; }
+            if (t !== 'dark' && t !== 'light') {
+                t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../assets/style.css" rel="stylesheet">
     <style>
-        .doc-content { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
-        .doc-nav { background: var(--bg-light); padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
-        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; color: var(--text-light); }
+        .doc-content { max-width: 820px; margin: 0 auto; padding: 2rem 1rem 1rem; }
+        .doc-nav { background: var(--bg-light); padding: 1rem 0; border-bottom: 1px solid var(--border-color); margin-top: 64px; }
+        .doc-content h2 { margin-top: 2.25rem; margin-bottom: .75rem; }
+        .doc-content h3 { margin-top: 1.5rem; }
+        .doc-content h4 { margin-top: 1.25rem; }
+        .doc-content ul, .doc-content ol { padding-left: 1.5rem; }
+        .breadcrumb { display: flex; align-items: center; gap: .5rem; color: var(--text-light); flex-wrap: wrap; }
         .breadcrumb a { color: var(--primary-color); text-decoration: none; }
-        .code-block { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: 0.5rem; padding: 1.5rem; margin: 1rem 0; overflow-x: auto; }
-        .warning { background: #fef3cd; border: 1px solid #fecb6b; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
-        .info { background: #cff4fc; border: 1px solid #9eeaf9; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
-        .flag-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        .flag-table th, .flag-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .code-block { background: var(--bg-light); border: 1px solid var(--border-color); border-radius: .5rem; padding: 1.25rem; margin: 1rem 0; overflow-x: auto; }
+        .code-block pre { margin: 0; }
+        pre code, .code-block code { font-family: 'Monaco','Menlo','Ubuntu Mono',monospace; color: var(--text-color); }
+        .doc-content :not(pre) > code { background: var(--bg-light); padding: .15rem .4rem; border-radius: .25rem; border: 1px solid var(--border-color); font-size: .9em; }
+        .info, .warning, .error { border-radius: .5rem; padding: 1rem 1.25rem; margin: 1rem 0; border: 1px solid; }
+        .info { background: var(--info-bg); border-color: var(--info-border); }
+        .warning { background: var(--warning-bg); border-color: var(--warning-border); }
+        .error { background: var(--error-bg); border-color: var(--error-border); }
+        .flag-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .92rem; }
+        .flag-table th, .flag-table td { padding: .6rem .75rem; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: top; }
         .flag-table th { background: var(--bg-light); font-weight: 600; }
-        .flag-table code { background: var(--bg-light); padding: 0.2rem 0.4rem; border-radius: 0.25rem; }
+        .flag-table code { background: var(--bg-light); padding: .15rem .4rem; border-radius: .25rem; border: 1px solid var(--border-color); }
+        .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+        .doc-footer a { color: var(--primary-color); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -25,13 +46,17 @@
         <nav class="nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <i class="fas fa-search-plus"></i>
-                    <span>Kollect</span>
+                    <a href="../index.html" style="display:flex; align-items:center; text-decoration:none; color:inherit;">
+                        <img src="../assets/Kollect.png" class="site-logo" data-logo-light="../assets/Kollect.png" data-logo-dark="../assets/dark_Kollect.png" alt="Kollect" style="height: 32px; margin-right: 8px;">
+                        <span>Kollect</span>
+                    </a>
                 </div>
                 <ul class="nav-menu">
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="getting-started.html">Docs</a></li>
-                    <li><a href="https://github.com/MichaelCade/kollect" target="_blank">GitHub</a></li>
+                    <li><a href="../stats.html">Stats</a></li>
+                    <li><a href="https://github.com/MichaelCade/kollect-web" target="_blank">GitHub</a></li>
+                    <li class="nav-toggle-item"><button class="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button></li>
                 </ul>
             </div>
         </nav>
@@ -51,26 +76,20 @@
 
     <main class="doc-content">
         <h1>Configuration Guide</h1>
-        
-        <p>Kollect is configured through command-line flags and environment variables. <strong>There are no configuration files</strong> - everything is controlled via CLI arguments and environment variables for simplicity.</p>
 
-        <div class="info">
-            <p><strong>💡 Key Point:</strong> Kollect uses your existing cloud CLI configurations (AWS CLI, Azure CLI, gcloud, kubectl) by default. No additional setup required for basic usage!</p>
-        </div>
+        <p>Kollect is configured entirely through command-line flags and environment variables — <strong>there are no configuration files</strong>. It uses your existing cloud CLI configurations (AWS CLI, Azure CLI, gcloud, kubectl, Docker) by default, so basic usage needs no setup.</p>
 
-        <h2>Basic Usage</h2>
-
-        <p>Start kollect with different inventory types:</p>
-
+        <h2>Basic usage</h2>
         <div class="code-block">
-            <pre><code># Discover all available resources and start web UI
+            <pre><code># Discover everything with detected credentials
 ./kollect --inventory all
 
-# Start web interface only (for importing/viewing existing data)
+# Web interface only (import/view existing data)
 ./kollect --browser
 
-# Discover specific platforms
+# A single platform
 ./kollect --inventory kubernetes
+./kollect --inventory openshift
 ./kollect --inventory aws
 ./kollect --inventory azure
 ./kollect --inventory gcp
@@ -78,307 +97,220 @@
 ./kollect --inventory terraform
 ./kollect --inventory vault
 ./kollect --inventory vsphere
-./kollect --inventory veeam
+./kollect --inventory proxmox
+./kollect --inventory hyperv
+./kollect --inventory nutanix
 
-# Find snapshots across all platforms
+# Snapshots across all platforms
 ./kollect --snapshots
 
-# Enable backup platform mode
-./kollect --backup</code></pre>
+# Start the MCP server for AI tools
+./kollect --mcp</code></pre>
         </div>
 
-        <h2>Command-Line Flags</h2>
+        <div class="info">
+            <p><strong>One platform at a time.</strong> <code>--inventory</code> takes a single value or <code>all</code>. There is no comma-separated list — run Kollect once per platform, or use <code>all</code>.</p>
+        </div>
 
-        <p>Complete list of available command-line options:</p>
-
+        <h2>Core flags</h2>
         <table class="flag-table">
             <thead>
-                <tr>
-                    <th>Flag</th>
-                    <th>Description</th>
-                    <th>Example</th>
-                </tr>
+                <tr><th>Flag</th><th>Description</th><th>Example</th></tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><code>--inventory</code></td>
-                    <td>Type of inventory to collect</td>
-                    <td><code>--inventory kubernetes</code></td>
-                </tr>
-                <tr>
-                    <td><code>--browser</code></td>
-                    <td>Start web interface only</td>
-                    <td><code>--browser</code></td>
-                </tr>
-                <tr>
-                    <td><code>--snapshots</code></td>
-                    <td>Collect snapshots from all platforms</td>
-                    <td><code>--snapshots</code></td>
-                </tr>
-                <tr>
-                    <td><code>--backup</code></td>
-                    <td>Enable backup platform UI mode</td>
-                    <td><code>--backup</code></td>
-                </tr>
-                <tr>
-                    <td><code>--output</code></td>
-                    <td>Save collected data to file</td>
-                    <td><code>--output data.json</code></td>
-                </tr>
-                <tr>
-                    <td><code>--storage</code></td>
-                    <td>Collect only storage objects (K8s only)</td>
-                    <td><code>--storage</code></td>
-                </tr>
-                <tr>
-                    <td><code>--kubeconfig</code></td>
-                    <td>Path to kubeconfig file</td>
-                    <td><code>--kubeconfig ~/.kube/config</code></td>
-                </tr>
-                <tr>
-                    <td><code>--kube-context</code></td>
-                    <td>Kubernetes context to use</td>
-                    <td><code>--kube-context prod-cluster</code></td>
-                </tr>
-                <tr>
-                    <td><code>--docker-host</code></td>
-                    <td>Docker host connection</td>
-                    <td><code>--docker-host unix:///var/run/docker.sock</code></td>
-                </tr>
-                <tr>
-                    <td><code>--mcp</code></td>
-                    <td>Start MCP (Model Context Protocol) server</td>
-                    <td><code>--mcp</code></td>
-                </tr>
+                <tr><td><code>--inventory</code></td><td>Type of inventory to collect (<code>all</code>, <code>kubernetes</code>, <code>openshift</code>, <code>aws</code>, <code>azure</code>, <code>gcp</code>, <code>terraform</code>, <code>vault</code>, <code>docker</code>, <code>vsphere</code>, <code>proxmox</code>, <code>hyperv</code>, <code>nutanix</code>)</td><td><code>--inventory aws</code></td></tr>
+                <tr><td><code>--browser</code></td><td>Open the web interface (can be used alone to import data)</td><td><code>--browser</code></td></tr>
+                <tr><td><code>--snapshots</code></td><td>Collect snapshots from all available platforms</td><td><code>--snapshots</code></td></tr>
+                <tr><td><code>--mcp</code></td><td>Start the MCP (Model Context Protocol) server</td><td><code>--mcp</code></td></tr>
+                <tr><td><code>--output</code></td><td>Save collected data to a JSON file</td><td><code>--output data.json</code></td></tr>
+                <tr><td><code>--port</code></td><td>Port for the local web/API server (default 8080)</td><td><code>--port 9090</code></td></tr>
+                <tr><td><code>--storage</code></td><td>Collect only storage objects (Kubernetes only)</td><td><code>--storage</code></td></tr>
+                <tr><td><code>--kubeconfig</code></td><td>Path to kubeconfig file</td><td><code>--kubeconfig ~/.kube/config</code></td></tr>
+                <tr><td><code>--kube-context</code></td><td>Kubernetes context to use</td><td><code>--kube-context prod</code></td></tr>
+                <tr><td><code>--docker-host</code></td><td>Docker host connection</td><td><code>--docker-host unix:///var/run/docker.sock</code></td></tr>
+                <tr><td><code>--scenario-csv</code></td><td>Export a Veeam Scenario Builder CSV (single provider: file; <code>--inventory all</code>: directory)</td><td><code>--scenario-csv out.csv</code></td></tr>
+                <tr><td><code>--scenario-group</code></td><td>Group all workloads into one summary row per sheet in the CSV export</td><td><code>--scenario-group</code></td></tr>
+                <tr><td><code>--help</code></td><td>Show all flags</td><td><code>--help</code></td></tr>
             </tbody>
         </table>
 
-        <h3>Platform-Specific Flags</h3>
+        <h3>Platform-specific flags</h3>
 
         <h4>Terraform</h4>
         <table class="flag-table">
             <tbody>
-                <tr>
-                    <td><code>--terraform-state</code></td>
-                    <td>Path to local Terraform state file</td>
-                    <td><code>--terraform-state ./terraform.tfstate</code></td>
-                </tr>
-                <tr>
-                    <td><code>--terraform-s3</code></td>
-                    <td>S3 bucket containing state</td>
-                    <td><code>--terraform-s3 mybucket/terraform.tfstate</code></td>
-                </tr>
-                <tr>
-                    <td><code>--terraform-s3-region</code></td>
-                    <td>AWS region for S3 bucket</td>
-                    <td><code>--terraform-s3-region us-east-1</code></td>
-                </tr>
-                <tr>
-                    <td><code>--terraform-azure</code></td>
-                    <td>Azure storage container</td>
-                    <td><code>--terraform-azure storage/container/blob</code></td>
-                </tr>
-                <tr>
-                    <td><code>--terraform-gcs</code></td>
-                    <td>GCS bucket and object</td>
-                    <td><code>--terraform-gcs bucket/terraform.tfstate</code></td>
-                </tr>
+                <tr><td><code>--terraform-state</code></td><td>Path to local Terraform state file</td><td><code>--terraform-state ./terraform.tfstate</code></td></tr>
+                <tr><td><code>--terraform-s3</code></td><td>S3 bucket containing state (<code>bucket/key</code>)</td><td><code>--terraform-s3 mybucket/prod.tfstate</code></td></tr>
+                <tr><td><code>--terraform-s3-region</code></td><td>AWS region for the S3 bucket (defaults to <code>AWS_REGION</code>)</td><td><code>--terraform-s3-region us-east-1</code></td></tr>
+                <tr><td><code>--terraform-azure</code></td><td>Azure Blob state (<code>storageaccount/container/blob</code>)</td><td><code>--terraform-azure sa/container/blob</code></td></tr>
+                <tr><td><code>--terraform-gcs</code></td><td>GCS bucket and object (<code>bucket/object</code>)</td><td><code>--terraform-gcs bucket/terraform.tfstate</code></td></tr>
             </tbody>
         </table>
 
         <h4>Vault</h4>
         <table class="flag-table">
             <tbody>
-                <tr>
-                    <td><code>--vault-addr</code></td>
-                    <td>Vault server address</td>
-                    <td><code>--vault-addr https://vault.example.com:8200</code></td>
-                </tr>
-                <tr>
-                    <td><code>--vault-token</code></td>
-                    <td>Vault authentication token</td>
-                    <td><code>--vault-token s.abc123...</code></td>
-                </tr>
+                <tr><td><code>--vault-addr</code></td><td>Vault server address</td><td><code>--vault-addr https://vault.example.com:8200</code></td></tr>
+                <tr><td><code>--vault-token</code></td><td>Vault authentication token</td><td><code>--vault-token s.abc123...</code></td></tr>
             </tbody>
         </table>
 
         <h4>VMware vSphere</h4>
         <table class="flag-table">
             <tbody>
-                <tr>
-                    <td><code>--vsphere-server</code></td>
-                    <td>vCenter server address</td>
-                    <td><code>--vsphere-server vcenter.example.com</code></td>
-                </tr>
-                <tr>
-                    <td><code>--vsphere-username</code></td>
-                    <td>vSphere username</td>
-                    <td><code>--vsphere-username readonly@vsphere.local</code></td>
-                </tr>
-                <tr>
-                    <td><code>--vsphere-password</code></td>
-                    <td>vSphere password</td>
-                    <td><code>--vsphere-password password123</code></td>
-                </tr>
-                <tr>
-                    <td><code>--vsphere-insecure</code></td>
-                    <td>Skip SSL verification</td>
-                    <td><code>--vsphere-insecure</code></td>
-                </tr>
+                <tr><td><code>--vsphere-server</code></td><td>vCenter server address</td><td><code>--vsphere-server vcenter.example.com</code></td></tr>
+                <tr><td><code>--vsphere-username</code></td><td>vSphere username</td><td><code>--vsphere-username readonly@vsphere.local</code></td></tr>
+                <tr><td><code>--vsphere-password</code></td><td>vSphere password</td><td><code>--vsphere-password ******</code></td></tr>
+                <tr><td><code>--vsphere-insecure</code></td><td>Skip SSL verification</td><td><code>--vsphere-insecure</code></td></tr>
             </tbody>
         </table>
 
-        <h4>Veeam Backup & Replication</h4>
+        <h4>Proxmox VE</h4>
         <table class="flag-table">
             <tbody>
-                <tr>
-                    <td><code>--veeam-url</code></td>
-                    <td>Veeam server URL</td>
-                    <td><code>--veeam-url https://veeam.example.com:9419</code></td>
-                </tr>
-                <tr>
-                    <td><code>--veeam-username</code></td>
-                    <td>Veeam username</td>
-                    <td><code>--veeam-username admin</code></td>
-                </tr>
-                <tr>
-                    <td><code>--veeam-password</code></td>
-                    <td>Veeam password</td>
-                    <td><code>--veeam-password password123</code></td>
-                </tr>
-                <tr>
-                    <td><code>--veeam-insecure</code></td>
-                    <td>Skip SSL verification</td>
-                    <td><code>--veeam-insecure</code></td>
-                </tr>
+                <tr><td><code>--proxmox-server</code></td><td>Proxmox VE server address (host or host:port)</td><td><code>--proxmox-server pve.example.com</code></td></tr>
+                <tr><td><code>--proxmox-token</code></td><td>API token (<code>user@realm!tokenid=secret</code>)</td><td><code>--proxmox-token root@pam!kollect=...</code></td></tr>
+                <tr><td><code>--proxmox-username</code></td><td>Username (used when no API token is given)</td><td><code>--proxmox-username root@pam</code></td></tr>
+                <tr><td><code>--proxmox-password</code></td><td>Password (used when no API token is given)</td><td><code>--proxmox-password ******</code></td></tr>
+                <tr><td><code>--proxmox-insecure</code></td><td>Skip SSL verification</td><td><code>--proxmox-insecure</code></td></tr>
             </tbody>
         </table>
 
-        <h2>Environment Variables</h2>
+        <h4>Microsoft Hyper-V</h4>
+        <table class="flag-table">
+            <tbody>
+                <tr><td><code>--hyperv-server</code></td><td>Hyper-V host or failover-cluster address (WinRM)</td><td><code>--hyperv-server 192.168.1.50</code></td></tr>
+                <tr><td><code>--hyperv-username</code></td><td>Username (<code>DOMAIN\user</code> or <code>HOST\user</code>)</td><td><code>--hyperv-username CORP\svc-kollect</code></td></tr>
+                <tr><td><code>--hyperv-password</code></td><td>Password</td><td><code>--hyperv-password ******</code></td></tr>
+                <tr><td><code>--hyperv-https</code></td><td>Use HTTPS (WinRM :5986); required for hosts enforcing message encryption</td><td><code>--hyperv-https</code></td></tr>
+                <tr><td><code>--hyperv-insecure</code></td><td>Skip TLS verification over HTTPS</td><td><code>--hyperv-insecure</code></td></tr>
+                <tr><td><code>--hyperv-cluster</code></td><td>Also query the Windows Failover Cluster (root/MSCluster)</td><td><code>--hyperv-cluster</code></td></tr>
+                <tr><td><code>--hyperv-auth</code></td><td>Auth mode: <code>auto</code> (default), <code>ntlm</code>, or <code>kerberos</code></td><td><code>--hyperv-auth kerberos</code></td></tr>
+                <tr><td><code>--hyperv-realm</code></td><td>Kerberos realm override</td><td><code>--hyperv-realm CORP.EXAMPLE.COM</code></td></tr>
+                <tr><td><code>--hyperv-kdc</code></td><td>Kerberos KDC host[:port] override</td><td><code>--hyperv-kdc dc01.corp.example.com</code></td></tr>
+            </tbody>
+        </table>
 
-        <p>Many flags can also be set via environment variables for security and convenience:</p>
+        <h4>Nutanix AHV</h4>
+        <table class="flag-table">
+            <tbody>
+                <tr><td><code>--nutanix-server</code></td><td>Prism Element address (port defaults to 9440)</td><td><code>--nutanix-server prism.example.com</code></td></tr>
+                <tr><td><code>--nutanix-username</code></td><td>Prism username</td><td><code>--nutanix-username admin</code></td></tr>
+                <tr><td><code>--nutanix-password</code></td><td>Prism password</td><td><code>--nutanix-password ******</code></td></tr>
+                <tr><td><code>--nutanix-insecure</code></td><td>Skip SSL verification (Community Edition uses a self-signed cert)</td><td><code>--nutanix-insecure</code></td></tr>
+            </tbody>
+        </table>
+
+        <h2>Environment variables</h2>
+        <p>Most connection flags can also be provided as environment variables — the preferred way to keep secrets off the command line. An explicit flag always wins over its environment variable.</p>
+
+        <h3>Web server port</h3>
+        <div class="code-block"><pre><code>export KOLLECT_PORT=9090   # equivalent to --port 9090</code></pre></div>
 
         <h3>Vault</h3>
-        <div class="code-block">
-            <pre><code># Vault configuration
-export VAULT_ADDR="https://vault.example.com:8200"
-export VAULT_TOKEN="s.abc123..."</code></pre>
-        </div>
+        <div class="code-block"><pre><code>export VAULT_ADDR="https://vault.example.com:8200"
+export VAULT_TOKEN="s.abc123..."</code></pre></div>
 
         <h3>VMware vSphere</h3>
-        <div class="code-block">
-            <pre><code># vSphere configuration
-export VSPHERE_SERVER="vcenter.example.com"
+        <div class="code-block"><pre><code>export VSPHERE_SERVER="vcenter.example.com"
 export VSPHERE_USERNAME="readonly@vsphere.local"
-export VSPHERE_PASSWORD="password123"
-export VSPHERE_INSECURE="true"</code></pre>
-        </div>
+export VSPHERE_PASSWORD="******"
+export VSPHERE_INSECURE="true"</code></pre></div>
 
-        <h3>Veeam</h3>
-        <div class="code-block">
-            <pre><code># Veeam configuration
-export VBR_SERVER_URL="https://veeam.example.com:9419"
-export VBR_USERNAME="admin"
-export VBR_PASSWORD="password123"
-export VBR_INSECURE="true"</code></pre>
-        </div>
+        <h3>Proxmox VE</h3>
+        <div class="code-block"><pre><code>export PROXMOX_SERVER="pve.example.com"
+export PROXMOX_TOKEN="root@pam!kollect=..."   # or PROXMOX_USERNAME / PROXMOX_PASSWORD
+export PROXMOX_INSECURE="true"</code></pre></div>
 
-        <h3>Terraform</h3>
-        <div class="code-block">
-            <pre><code># AWS region for Terraform S3 backend
-export AWS_REGION="us-east-1"</code></pre>
-        </div>
+        <h3>Hyper-V</h3>
+        <div class="code-block"><pre><code>export HYPERV_SERVER="192.168.1.50"
+export HYPERV_USERNAME="CORP\\svc-kollect"
+export HYPERV_PASSWORD="******"
+export HYPERV_HTTPS="true"
+export HYPERV_AUTH="kerberos"   # HYPERV_REALM / HYPERV_KDC also supported</code></pre></div>
 
-        <h2>Web Server</h2>
+        <h3>Nutanix</h3>
+        <div class="code-block"><pre><code>export NUTANIX_SERVER="prism.example.com"
+export NUTANIX_USERNAME="admin"
+export NUTANIX_PASSWORD="******"
+export NUTANIX_INSECURE="true"</code></pre></div>
 
-        <p>The kollect web interface runs on <strong>port 8080</strong> by default and cannot be changed. It automatically opens in your browser when you run kollect with any inventory collection.</p>
+        <h2>Web server &amp; port</h2>
+        <p>The web/API server listens on <strong>port 8080</strong> by default and binds to loopback only (<code>127.0.0.1</code>) since the API is unauthenticated. Change the port with <code>--port</code> or the <code>KOLLECT_PORT</code> environment variable — handy for running a terminal instance and an MCP instance side by side.</p>
+        <div class="code-block"><pre><code># Run on a different port
+./kollect --browser --port 9090
+# Web interface: http://localhost:9090</code></pre></div>
 
-        <div class="code-block">
-            <pre><code># Web interface will be available at:
-http://localhost:8080</code></pre>
-        </div>
-
-        <h2>Cloud Provider Authentication</h2>
-
-        <p>Kollect automatically uses your existing cloud CLI configurations:</p>
-
+        <h2>Cloud provider authentication</h2>
         <div class="info">
-            <h4>Automatic Authentication</h4>
             <ul>
-                <li><strong>AWS:</strong> Uses AWS CLI profiles (~/.aws/credentials) and IAM roles</li>
-                <li><strong>Azure:</strong> Uses Azure CLI authentication (az login)</li>
-                <li><strong>GCP:</strong> Uses gcloud authentication and service account keys</li>
-                <li><strong>Kubernetes:</strong> Uses kubectl configuration (~/.kube/config)</li>
-                <li><strong>Docker:</strong> Uses local Docker daemon connection</li>
+                <li><strong>AWS:</strong> AWS CLI profiles (<code>~/.aws/credentials</code>) and IAM roles</li>
+                <li><strong>Azure:</strong> Azure CLI authentication (<code>az login</code>)</li>
+                <li><strong>GCP:</strong> gcloud application-default credentials and service accounts</li>
+                <li><strong>Kubernetes / OpenShift:</strong> kubeconfig (<code>~/.kube/config</code>)</li>
+                <li><strong>Docker:</strong> the local Docker daemon socket</li>
             </ul>
         </div>
 
-        <h2>Example Workflows</h2>
+        <h2>Example workflows</h2>
 
-        <h3>Quick Start - Discover Everything</h3>
-        <div class="code-block">
-            <pre><code># Discover all platforms you have configured
-./kollect --inventory all</code></pre>
-        </div>
+        <h3>Kubernetes with a specific kubeconfig</h3>
+        <div class="code-block"><pre><code>./kollect --inventory kubernetes --kubeconfig ~/.kube/prod-config</code></pre></div>
 
-        <h3>Kubernetes Only</h3>
-        <div class="code-block">
-            <pre><code># Focus on Kubernetes cluster
-./kollect --inventory kubernetes --kubeconfig ~/.kube/prod-config</code></pre>
-        </div>
-
-        <h3>Multi-Cloud Discovery</h3>
-        <div class="code-block">
-            <pre><code># Discover AWS, Azure, and GCP resources
-./kollect --inventory aws,azure,gcp</code></pre>
-        </div>
-
-        <h3>Terraform State Analysis</h3>
-        <div class="code-block">
-            <pre><code># Local state file
+        <h3>Terraform state analysis</h3>
+        <div class="code-block"><pre><code># Local state
 ./kollect --inventory terraform --terraform-state ./terraform.tfstate
 
 # Remote S3 backend
-./kollect --inventory terraform --terraform-s3 mybucket/prod.tfstate --terraform-s3-region us-west-2</code></pre>
-        </div>
+./kollect --inventory terraform --terraform-s3 mybucket/prod.tfstate --terraform-s3-region us-west-2</code></pre></div>
 
-        <h3>vSphere Environment</h3>
-        <div class="code-block">
-            <pre><code># Connect to vCenter
-export VSPHERE_SERVER="vcenter.company.com"
+        <h3>vSphere via environment variables</h3>
+        <div class="code-block"><pre><code>export VSPHERE_SERVER="vcenter.company.com"
 export VSPHERE_USERNAME="readonly@vsphere.local"
-export VSPHERE_PASSWORD="secretpassword"
-./kollect --inventory vsphere --vsphere-insecure</code></pre>
-        </div>
+export VSPHERE_PASSWORD="******"
+./kollect --inventory vsphere --vsphere-insecure</code></pre></div>
 
-        <h3>Snapshot Discovery</h3>
-        <div class="code-block">
-            <pre><code># Find orphaned snapshots across all platforms
-./kollect --snapshots</code></pre>
-        </div>
+        <h3>Export for Veeam Scenario Builder</h3>
+        <div class="code-block"><pre><code># Single provider -> CSV file
+./kollect --inventory vsphere --scenario-csv vsphere-scenario.csv
 
-        <h3>Data Export</h3>
-        <div class="code-block">
-            <pre><code># Collect data and save to file
-./kollect --inventory all --output infrastructure-audit.json</code></pre>
-        </div>
+# All providers -> directory of CSVs
+./kollect --inventory all --scenario-csv ./scenario-out/</code></pre></div>
+
+        <h3>Save data to a file</h3>
+        <div class="code-block"><pre><code>./kollect --inventory all --output infrastructure-audit.json</code></pre></div>
 
         <div class="warning">
-            <h4>🔒 Security Best Practices</h4>
+            <h4>🔒 Security best practices</h4>
             <ul>
-                <li>Use environment variables for passwords and tokens instead of command-line flags</li>
-                <li>Create read-only service accounts and users for kollect</li>
-                <li>Use IAM roles and managed identities when possible</li>
+                <li>Prefer environment variables over passing passwords/tokens as flags</li>
+                <li>Create read-only service accounts for Kollect</li>
+                <li>Use IAM roles and managed identities where possible</li>
                 <li>Never store credentials in scripts or version control</li>
             </ul>
         </div>
 
-        <footer class="doc-footer">
-            <p>
-                <a href="getting-started.html">← Getting Started</a> |
-                <a href="api.html">API Reference →</a>
-            </p>
-        </footer>
+        <div class="doc-footer">
+            <p><a href="getting-started.html">← Getting Started</a> &nbsp;|&nbsp; <a href="api.html">API Reference →</a></p>
+        </div>
     </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="../assets/Kollect.png" class="site-logo" data-logo-light="../assets/Kollect.png" data-logo-dark="../assets/dark_Kollect.png" alt="Kollect" style="height: 24px; margin-right: 8px;">
+                    <span>Kollect</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/MichaelCade/kollect-web">GitHub</a>
+                    <a href="../index.html">Home</a>
+                    <a href="../stats.html">Stats</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/theme.js"></script>
 </body>
 </html>

@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kollect - Multi-Cloud Infrastructure Discovery Tool</title>
-    <meta name="description" content="Kollect is a comprehensive tool for discovering and inventorying cloud infrastructure across AWS, Azure, GCP, VMware vSphere, and more.">
+    <title>Kollect - Multi-Cloud & Infrastructure Discovery Tool</title>
+    <meta name="description" content="Kollect discovers and inventories your infrastructure across AWS, Azure, GCP, Kubernetes, OpenShift, Docker, VMware vSphere, Hyper-V, Proxmox, Nutanix, Terraform, Vault and more — with cost analysis, snapshot hunting and a built-in MCP server for AI-powered analysis.">
+    <script>
+        // Pre-paint theme: use the saved choice, else follow the OS preference.
+        (function () {
+            var t;
+            try { t = localStorage.getItem('theme'); } catch (e) { t = null; }
+            if (t !== 'dark' && t !== 'light') {
+                t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="assets/style.css" rel="stylesheet">
 </head>
@@ -13,14 +24,17 @@
         <nav class="nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <img src="assets/Kollect.png" alt="Kollect" style="height: 32px; margin-right: 8px;">
+                    <img src="assets/Kollect.png" class="site-logo" data-logo-light="assets/Kollect.png" data-logo-dark="assets/dark_Kollect.png" alt="Kollect" style="height: 32px; margin-right: 8px;">
                     <span>Kollect</span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="#features">Features</a></li>
+                    <li><a href="#platforms">Platforms</a></li>
+                    <li><a href="#capabilities">Capabilities</a></li>
                     <li><a href="#download">Download</a></li>
-                    <li><a href="#docs">Documentation</a></li>
+                    <li><a href="#docs">Docs</a></li>
+                    <li><a href="stats.html">Stats</a></li>
                     <li><a href="https://github.com/MichaelCade/kollect-web" target="_blank">GitHub</a></li>
+                    <li class="nav-toggle-item"><button class="theme-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button></li>
                 </ul>
             </div>
         </nav>
@@ -31,112 +45,195 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h1>Multi-Cloud Infrastructure Discovery Made Simple</h1>
-                    <p class="hero-subtitle">Born from Kubernetes discovery, Kollect now automatically inventories your entire infrastructure across cloud platforms, containers, virtual environments, and DevOps tooling.</p>
+                    <h1>Multi-Cloud & Infrastructure Discovery Made Simple</h1>
+                    <p class="hero-subtitle">Born from Kubernetes discovery, Kollect now inventories your entire estate — public clouds, containers, virtualization, and DevOps tooling — through one web interface, a single binary, and a built-in MCP server for AI-powered analysis.</p>
                     <div class="hero-actions">
                         <a href="#download" class="btn btn-primary">
                             <i class="fas fa-download"></i>
                             Download Latest
                         </a>
-                        <a href="#features" class="btn btn-outline">
-                            <i class="fas fa-play"></i>
-                            Learn More
+                        <a href="#platforms" class="btn btn-outline">
+                            <i class="fas fa-layer-group"></i>
+                            See Platforms
                         </a>
                     </div>
                 </div>
                 <div class="hero-image">
                     <div class="dashboard-preview">
                         <div class="dashboard-header">
-                            <div class="dashboard-title">Kollect Dashboard</div>
+                            <div class="dashboard-title">
+                                <img src="assets/Kollect.png" class="site-logo" data-logo-light="assets/Kollect.png" data-logo-dark="assets/dark_Kollect.png" alt="" style="height: 18px; margin-right: 6px; vertical-align: middle;">
+                                Kollect
+                            </div>
                             <div class="dashboard-status">
                                 <span class="status-dot active"></span>
                                 <span>Scanning...</span>
                             </div>
                         </div>
-                        <div class="cloud-icons">
-                            <i class="fas fa-dharmachakra" title="Kubernetes"></i>
-                            <i class="fab fa-aws" title="AWS"></i>
-                            <i class="fab fa-microsoft" title="Azure"></i>
-                            <i class="fab fa-google" title="Google Cloud"></i>
-                            <i class="fab fa-docker" title="Docker"></i>
-                            <i class="fas fa-server" title="vSphere"></i>
-                            <i class="fas fa-clone" title="Snapshot Hunter"></i>
-                            <i class="fas fa-dollar-sign" title="Cost Explorer"></i>
-                            <i class="fas fa-compass" title="Backup Compass"></i>
+                        <div class="mini-lanes">
+                            <div class="mini-lane">
+                                <div class="mini-lane-label">Cloud</div>
+                                <div class="mini-buttons">
+                                    <span class="mini-btn" title="AWS"><img src="assets/aws.svg" alt="AWS"></span>
+                                    <span class="mini-btn" title="Azure"><img src="assets/azure.svg" alt="Azure"></span>
+                                    <span class="mini-btn" title="Google Cloud"><img src="assets/gcp.svg" alt="Google Cloud"></span>
+                                    <span class="mini-btn soon" title="Oracle Cloud (coming soon)"><img src="assets/oracle.png" alt="Oracle Cloud"></span>
+                                </div>
+                            </div>
+                            <div class="mini-lane">
+                                <div class="mini-lane-label">Cloud-Native</div>
+                                <div class="mini-buttons">
+                                    <span class="mini-btn" title="Kubernetes"><img src="assets/kubernetes.svg" alt="Kubernetes"></span>
+                                    <span class="mini-btn" title="Red Hat OpenShift"><img src="assets/openshift.png" alt="OpenShift"></span>
+                                    <span class="mini-btn" title="Docker"><img src="assets/docker.png" alt="Docker"></span>
+                                </div>
+                            </div>
+                            <div class="mini-lane">
+                                <div class="mini-lane-label">DevOps</div>
+                                <div class="mini-buttons">
+                                    <span class="mini-btn" title="HashiCorp Terraform"><img src="assets/terraform.svg" alt="Terraform"></span>
+                                    <span class="mini-btn" title="HashiCorp Vault"><img src="assets/vault.png" alt="Vault"></span>
+                                    <span class="mini-btn soon" title="GitHub (coming soon)"><img src="assets/github.png" alt="GitHub"></span>
+                                    <span class="mini-btn soon" title="Azure DevOps (coming soon)"><img src="assets/azure-devops.png" alt="Azure DevOps"></span>
+                                    <span class="mini-btn soon" title="Atlassian Jira (coming soon)"><img src="assets/jira.png" alt="Jira"></span>
+                                    <span class="mini-btn soon" title="Atlassian Confluence (coming soon)"><img src="assets/confluence.png" alt="Confluence"></span>
+                                </div>
+                            </div>
+                            <div class="mini-lane">
+                                <div class="mini-lane-label">Virtualization</div>
+                                <div class="mini-buttons">
+                                    <span class="mini-btn" title="VMware vSphere"><img src="assets/vsphere.png" alt="vSphere"></span>
+                                    <span class="mini-btn" title="Microsoft Hyper-V"><img src="assets/hyperv.png" alt="Hyper-V"></span>
+                                    <span class="mini-btn" title="Proxmox VE"><img src="assets/proxmox.png" alt="Proxmox VE"></span>
+                                    <span class="mini-btn" title="Nutanix AHV"><img src="assets/nutanix.png" alt="Nutanix AHV"></span>
+                                    <span class="mini-btn soon" title="HPE VM Essentials (coming soon)"><img src="assets/hpe.png" alt="HPE VM Essentials"></span>
+                                    <span class="mini-btn soon" title="XCP-ng (coming soon)"><img src="assets/xcp-ng.png" alt="XCP-ng"></span>
+                                    <span class="mini-btn soon" title="OpenStack (coming soon)"><img class="logo-mono" src="assets/openstack.png" alt="OpenStack"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mini-tools">
+                            <span class="mini-tool" title="Snapshot Hunter"><i class="fas fa-clone"></i></span>
+                            <span class="mini-tool" title="Cost Explorer"><i class="fas fa-dollar-sign"></i></span>
+                            <span class="mini-tool soon" title="Platform Mapper (coming soon)"><i class="fas fa-map"></i></span>
+                            <span class="mini-tool" title="Export"><i class="fas fa-download"></i></span>
+                            <span class="mini-tool" title="Scenario Builder CSV"><i class="fas fa-file-csv"></i></span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section id="features" class="features">
+        <!-- Platform Coverage -->
+        <section id="platforms" class="features">
             <div class="container">
-                <h2>Comprehensive Cloud Discovery</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-cloud"></i>
+                <h2>Platform Coverage</h2>
+                <p class="section-note">Kollect groups integrations the way the app does — Cloud, Cloud-Native, DevOps, and Virtualization. Everything below is available today; dashed badges are on the roadmap.</p>
+                <div class="platform-lanes">
+                    <div class="platform-lane">
+                        <div class="platform-lane-head">
+                            <span class="lane-icon"><i class="fas fa-cloud"></i></span>
+                            <h3>Cloud</h3>
                         </div>
-                        <h3>Cloud Discovery</h3>
                         <div class="platform-badges">
                             <span class="platform-badge aws"><img src="assets/aws.svg" alt="AWS" class="badge-logo"> AWS</span>
                             <span class="platform-badge azure"><img src="assets/azure.svg" alt="Azure" class="badge-logo"> Azure</span>
                             <span class="platform-badge gcp"><img src="assets/gcp.svg" alt="GCP" class="badge-logo"> GCP</span>
+                            <span class="platform-badge soon"><img src="assets/oracle.png" alt="Oracle Cloud" class="badge-logo"> Oracle <span class="soon-tag">SOON</span></span>
                         </div>
-                        <p>EC2, S3, RDS, DynamoDB • VMs, Storage, Networks • Compute, Storage, Cloud SQL</p>
+                        <p>EC2, S3, RDS, DynamoDB, VPCs, EBS • VMs, Storage, VNets, SQL, CosmosDB • Compute, Buckets, Cloud SQL, disks.</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-cube"></i>
+                    <div class="platform-lane">
+                        <div class="platform-lane-head">
+                            <span class="lane-icon"><i class="fas fa-dharmachakra"></i></span>
+                            <h3>Cloud-Native</h3>
                         </div>
-                        <h3>Container Platforms</h3>
                         <div class="platform-badges">
                             <span class="platform-badge kubernetes"><img src="assets/kubernetes.svg" alt="Kubernetes" class="badge-logo"> Kubernetes</span>
+                            <span class="platform-badge" style="background: linear-gradient(135deg, #EE0000, #A30000);"><img src="assets/openshift.png" alt="OpenShift" class="badge-logo"> OpenShift</span>
                             <span class="platform-badge docker"><img src="assets/docker.png" alt="Docker" class="badge-logo"> Docker</span>
                         </div>
-                        <p>Clusters, pods, services, deployments • Containers, images, volumes, networks</p>
+                        <p>Nodes, namespaces, pods, deployments, services, PVs and KubeVirt VMs • Red Hat OpenShift clusters • Docker containers, images, volumes, networks.</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
+                    <div class="platform-lane">
+                        <div class="platform-lane-head">
+                            <span class="lane-icon"><i class="fas fa-tools"></i></span>
+                            <h3>DevOps</h3>
                         </div>
-                        <h3>Cost Analysis</h3>
                         <div class="platform-badges">
-                            <span class="platform-badge cost"><i class="fas fa-dollar-sign"></i> Multi-Cloud</span>
+                            <span class="platform-badge terraform"><img src="assets/terraform.svg" alt="Terraform" class="badge-logo"> Terraform</span>
+                            <span class="platform-badge vault"><img src="assets/vault.png" alt="Vault" class="badge-logo"> Vault</span>
+                            <span class="platform-badge soon"><img src="assets/github.png" alt="GitHub" class="badge-logo"> GitHub <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge soon"><img src="assets/azure-devops.png" alt="Azure DevOps" class="badge-logo"> Azure DevOps <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge soon"><img src="assets/jira.png" alt="Jira" class="badge-logo"> Jira <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge soon"><img src="assets/confluence.png" alt="Confluence" class="badge-logo"> Confluence <span class="soon-tag">SOON</span></span>
                         </div>
-                        <p>Track spending and resource utilization across all platforms to optimize costs</p>
+                        <p>Terraform state analysis (local, S3, Azure Blob, GCS) • HashiCorp Vault secrets engines, auth methods and policies.</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-camera"></i>
+                    <div class="platform-lane">
+                        <div class="platform-lane-head">
+                            <span class="lane-icon"><i class="fas fa-server"></i></span>
+                            <h3>Virtualization</h3>
                         </div>
-                        <h3>Snapshot Hunter</h3>
-                        <div class="platform-badges">
-                            <span class="platform-badge snapshots"><i class="fas fa-search"></i> Discovery</span>
-                        </div>
-                        <p>Find orphaned snapshots and backups across cloud platforms to reduce storage costs</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <h3>Virtual Environments</h3>
                         <div class="platform-badges">
                             <span class="platform-badge vsphere"><img src="assets/vsphere.png" alt="vSphere" class="badge-logo"> vSphere</span>
+                            <span class="platform-badge" style="background: linear-gradient(135deg, #0078D4, #005A9E);"><img src="assets/hyperv.png" alt="Hyper-V" class="badge-logo"> Hyper-V</span>
+                            <span class="platform-badge" style="background: linear-gradient(135deg, #E57000, #B35900);"><img src="assets/proxmox.png" alt="Proxmox VE" class="badge-logo"> Proxmox</span>
+                            <span class="platform-badge" style="background: linear-gradient(135deg, #024DA1, #013A7A);"><img src="assets/nutanix.png" alt="Nutanix AHV" class="badge-logo"> Nutanix</span>
+                            <span class="platform-badge soon"><img src="assets/hpe.png" alt="HPE VM Essentials" class="badge-logo"> HPE <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge soon"><img src="assets/xcp-ng.png" alt="XCP-ng" class="badge-logo"> XCP-ng <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge soon"><img src="assets/openstack.png" alt="OpenStack" class="badge-logo"> OpenStack <span class="soon-tag">SOON</span></span>
                         </div>
-                        <p>Virtual machines, datastores, clusters, and resource pools across vCenter infrastructure</p>
+                        <p>VMware vSphere with live performance metrics • Microsoft Hyper-V (standalone and failover clusters) • Proxmox VE • Nutanix AHV.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Capabilities -->
+        <section id="capabilities" class="capabilities">
+            <div class="container">
+                <h2>Beyond Inventory</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-camera"></i></div>
+                        <h3>Snapshot Hunter</h3>
+                        <div class="platform-badges">
+                            <span class="platform-badge snapshots"><i class="fas fa-search"></i> Cross-platform</span>
+                        </div>
+                        <p>Find snapshots and orphaned backups across Kubernetes, the public clouds (AWS, Azure, GCP) and hypervisors (vSphere, Nutanix) with a single <code>--snapshots</code> run.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <h3>DevOps Tooling</h3>
+                        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Cost Explorer</h3>
                         <div class="platform-badges">
-                            <span class="platform-badge vault"><img src="assets/vault.png" alt="Vault" class="badge-logo"> Vault</span>
-                            <span class="platform-badge terraform"><img src="assets/terraform.svg" alt="Terraform" class="badge-logo"> Terraform</span>
+                            <span class="platform-badge cost"><i class="fas fa-dollar-sign"></i> AWS · Azure · GCP</span>
                         </div>
-                        <p>Secrets and policies inventory • Infrastructure state and resource discovery</p>
+                        <p>Real-time cost analysis for cloud resources and snapshots, so you can spot spend and reclaim storage.</p>
+                    </div>
+                    <div class="feature-card is-soon">
+                        <div class="feature-icon"><i class="fas fa-map"></i></div>
+                        <h3>Platform Mapper</h3>
+                        <div class="platform-badges">
+                            <span class="platform-badge soon"><i class="fas fa-project-diagram"></i> Coming soon</span>
+                        </div>
+                        <p>Visualize how discovered platforms and resources connect across your infrastructure.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                        <h3>MCP Server</h3>
+                        <div class="platform-badges">
+                            <span class="platform-badge mcp"><i class="fas fa-bolt"></i> AI-native</span>
+                        </div>
+                        <p>A native Model Context Protocol server (<code>--mcp</code>) lets Claude and other AI tools read, analyze, and search your inventory.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-file-csv"></i></div>
+                        <h3>Scenario Builder Export</h3>
+                        <div class="platform-badges">
+                            <span class="platform-badge scenario"><i class="fas fa-file-export"></i> CSV</span>
+                        </div>
+                        <p>Export discovered AWS, Azure, GCP, vSphere, Proxmox, Hyper-V, and Nutanix workloads to Veeam Scenario Builder CSV.</p>
                     </div>
                 </div>
             </div>
@@ -146,8 +243,8 @@
         <section id="download" class="download">
             <div class="container">
                 <h2>Download Kollect</h2>
-                <p class="download-subtitle">Get the latest version for your platform</p>
-                
+                <p class="download-subtitle">A single, self-contained binary for your platform — no dependencies to install</p>
+
                 <div class="release-info" id="release-info">
                     <div class="loading">
                         <i class="fas fa-spinner fa-spin"></i>
@@ -163,31 +260,35 @@
                     <h3>Quick Installation</h3>
                     <div class="install-tabs">
                         <button class="tab-btn active" data-tab="linux">Linux</button>
-                        <button class="tab-btn" data-tab="windows">Windows</button>
                         <button class="tab-btn" data-tab="macos">macOS</button>
+                        <button class="tab-btn" data-tab="windows">Windows</button>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane active" id="linux">
-                            <pre><code># Download and make executable
+                            <pre><code># Download and make executable (amd64; use kollect-linux-arm64 for ARM)
 curl -L -o kollect https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-linux-amd64
 chmod +x kollect
 
-# Run discovery
-./kollect</code></pre>
-                        </div>
-                        <div class="tab-pane" id="windows">
-                            <pre><code># Download from releases page or use PowerShell:
-# Invoke-WebRequest -Uri "https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-windows-amd64.exe" -OutFile "kollect.exe"
-# Run in PowerShell or Command Prompt
-kollect.exe</code></pre>
+# Launch the web interface
+./kollect --browser</code></pre>
                         </div>
                         <div class="tab-pane" id="macos">
-                            <pre><code># Download and make executable
-curl -L -o kollect https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-darwin-amd64
+                            <pre><code># Apple Silicon (M1/M2/M3). For Intel Macs use kollect-darwin-amd64
+curl -L -o kollect https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-darwin-arm64
 chmod +x kollect
 
-# Run discovery
-./kollect</code></pre>
+# macOS may quarantine the download; clear it if needed
+xattr -d com.apple.quarantine kollect 2>/dev/null || true
+
+# Launch the web interface
+./kollect --browser</code></pre>
+                        </div>
+                        <div class="tab-pane" id="windows">
+                            <pre><code># PowerShell (amd64; use kollect-windows-arm64.exe for ARM)
+Invoke-WebRequest -Uri "https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-windows-amd64.exe" -OutFile "kollect.exe"
+
+# Launch the web interface
+.\kollect.exe --browser</code></pre>
                         </div>
                     </div>
                 </div>
@@ -204,28 +305,28 @@ chmod +x kollect
                             <i class="fas fa-play"></i>
                         </div>
                         <h3>Getting Started</h3>
-                        <p>Quick setup guide and first steps with Kollect</p>
+                        <p>Download, run, and see your first inventory in minutes</p>
                     </a>
                     <a href="docs/configuration.html" class="doc-card">
                         <div class="doc-icon">
                             <i class="fas fa-cog"></i>
                         </div>
                         <h3>Configuration</h3>
-                        <p>Configure cloud credentials and customize discovery</p>
+                        <p>Every flag and environment variable, per platform</p>
                     </a>
                     <a href="docs/api.html" class="doc-card">
                         <div class="doc-icon">
                             <i class="fas fa-code"></i>
                         </div>
                         <h3>API Reference</h3>
-                        <p>REST API endpoints and data formats</p>
+                        <p>The local REST API endpoints and data formats</p>
                     </a>
                     <a href="docs/troubleshooting.html" class="doc-card">
                         <div class="doc-icon">
                             <i class="fas fa-wrench"></i>
                         </div>
                         <h3>Troubleshooting</h3>
-                        <p>Common issues and solutions</p>
+                        <p>Common connection issues and how to fix them</p>
                     </a>
                 </div>
             </div>
@@ -236,12 +337,13 @@ chmod +x kollect
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <img src="assets/Kollect.png" alt="Kollect" style="height: 24px; margin-right: 8px;">
+                    <img src="assets/Kollect.png" class="site-logo" data-logo-light="assets/Kollect.png" data-logo-dark="assets/dark_Kollect.png" alt="Kollect" style="height: 24px; margin-right: 8px;">
                     <span>Kollect</span>
                 </div>
                 <div class="footer-links">
                     <a href="https://github.com/MichaelCade/kollect-web">GitHub</a>
                     <a href="docs/getting-started.html">Documentation</a>
+                    <a href="stats.html">Stats</a>
                     <a href="#download">Download</a>
                 </div>
             </div>
@@ -251,6 +353,7 @@ chmod +x kollect
         </div>
     </footer>
 
+    <script src="assets/theme.js"></script>
     <script src="assets/script.js"></script>
 </body>
 </html>
