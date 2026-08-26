@@ -262,6 +262,7 @@
                         <button class="tab-btn active" data-tab="linux">Linux</button>
                         <button class="tab-btn" data-tab="macos">macOS</button>
                         <button class="tab-btn" data-tab="windows">Windows</button>
+                        <button class="tab-btn" data-tab="docker">Docker</button>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane active" id="linux">
@@ -289,6 +290,20 @@ Invoke-WebRequest -Uri "https://github.com/MichaelCade/kollect-web/releases/late
 
 # Launch the web interface
 .\kollect.exe --browser</code></pre>
+                        </div>
+                        <div class="tab-pane" id="docker">
+                            <pre><code># Pull and run (multi-arch: works on amd64 and arm64)
+docker run --rm -p 8080:8080 ghcr.io/michaelcade/kollect:latest
+
+# Then open http://localhost:8080 and connect to your platforms in the browser.
+# The container does NOT use your host's CLI credentials — enter them in the web
+# UI (access key/secret, service principal, service-account key, kubeconfig, or
+# host/username/password) when you connect.
+
+# Optional: inventory the host's own Docker (grants root-equivalent host access)
+docker run --rm -p 8080:8080 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  ghcr.io/michaelcade/kollect:latest</code></pre>
                         </div>
                     </div>
                 </div>

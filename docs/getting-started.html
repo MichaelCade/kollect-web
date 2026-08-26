@@ -101,8 +101,18 @@ xattr -d com.apple.quarantine kollect 2>/dev/null || true</code></pre>
 Invoke-WebRequest -Uri "https://github.com/MichaelCade/kollect-web/releases/latest/download/kollect-windows-amd64.exe" -OutFile "kollect.exe"</code></pre>
         </div>
 
+        <div class="code-block">
+            <h4>Docker</h4>
+            <pre><code># Multi-arch image (amd64 and arm64)
+docker run --rm -p 8080:8080 ghcr.io/michaelcade/kollect:latest</code></pre>
+        </div>
+
         <div class="info">
             <p><strong>Prefer to build from source?</strong> With Go 1.21+ installed: <code>git clone https://github.com/michaelcade/kollect.git &amp;&amp; cd kollect &amp;&amp; go build -o kollect ./cmd/kollect</code></p>
+        </div>
+
+        <div class="info">
+            <p><strong>Running in Docker?</strong> The container does not use your host's CLI credentials (kubeconfig, <code>~/.aws</code>, <code>az</code>/<code>gcloud</code> logins). Enter credentials in the web UI when you connect to each platform. Container support has so far been validated against VMware vSphere; other platforms are expected to work the same way but have not all been tested in a container yet.</p>
         </div>
 
         <h2>Quick start</h2>
