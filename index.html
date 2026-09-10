@@ -93,7 +93,7 @@
                                 <div class="mini-buttons">
                                     <span class="mini-btn" title="HashiCorp Terraform"><img src="assets/terraform.svg" alt="Terraform"></span>
                                     <span class="mini-btn" title="HashiCorp Vault"><img src="assets/vault.png" alt="Vault"></span>
-                                    <span class="mini-btn soon" title="GitHub (coming soon)"><img src="assets/github.png" alt="GitHub"></span>
+                                    <span class="mini-btn" title="GitHub"><img src="assets/github.png" alt="GitHub"></span>
                                     <span class="mini-btn soon" title="Azure DevOps (coming soon)"><img src="assets/azure-devops.png" alt="Azure DevOps"></span>
                                     <span class="mini-btn soon" title="Atlassian Jira (coming soon)"><img src="assets/jira.png" alt="Jira"></span>
                                     <span class="mini-btn soon" title="Atlassian Confluence (coming soon)"><img src="assets/confluence.png" alt="Confluence"></span>
@@ -141,7 +141,11 @@
                             <span class="platform-badge gcp"><img src="assets/gcp.svg" alt="GCP" class="badge-logo"> GCP</span>
                             <span class="platform-badge soon"><img src="assets/oracle.png" alt="Oracle Cloud" class="badge-logo"> Oracle <span class="soon-tag">SOON</span></span>
                         </div>
-                        <p>EC2, S3, RDS, DynamoDB, VPCs, EBS • VMs, Storage, VNets, SQL, CosmosDB • Compute, Buckets, Cloud SQL, disks.</p>
+                        <ul class="lane-list">
+                            <li>AWS - EC2, S3, RDS, DynamoDB, VPCs, EBS</li>
+                            <li>Microsoft Azure - VMs, Storage, VNets, SQL, CosmosDB</li>
+                            <li>Google Cloud - Compute, Buckets, Cloud SQL, disks</li>
+                        </ul>
                     </div>
                     <div class="platform-lane">
                         <div class="platform-lane-head">
@@ -153,7 +157,11 @@
                             <span class="platform-badge" style="background: linear-gradient(135deg, #EE0000, #A30000);"><img src="assets/openshift.png" alt="OpenShift" class="badge-logo"> OpenShift</span>
                             <span class="platform-badge docker"><img src="assets/docker.png" alt="Docker" class="badge-logo"> Docker</span>
                         </div>
-                        <p>Nodes, namespaces, pods, deployments, services, PVs and KubeVirt VMs • Red Hat OpenShift clusters • Docker containers, images, volumes, networks.</p>
+                        <ul class="lane-list">
+                            <li>Kubernetes - Nodes, namespaces, pods, deployments, services, PVs and KubeVirt VMs</li>
+                            <li>Red Hat OpenShift - Clusters, Operators, VMs</li>
+                            <li>Docker containers, images, volumes, networks</li>
+                        </ul>
                     </div>
                     <div class="platform-lane">
                         <div class="platform-lane-head">
@@ -163,12 +171,16 @@
                         <div class="platform-badges">
                             <span class="platform-badge terraform"><img src="assets/terraform.svg" alt="Terraform" class="badge-logo"> Terraform</span>
                             <span class="platform-badge vault"><img src="assets/vault.png" alt="Vault" class="badge-logo"> Vault</span>
-                            <span class="platform-badge soon"><img src="assets/github.png" alt="GitHub" class="badge-logo"> GitHub <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge github"><img src="assets/github.png" alt="GitHub" class="badge-logo"> GitHub</span>
                             <span class="platform-badge soon"><img src="assets/azure-devops.png" alt="Azure DevOps" class="badge-logo"> Azure DevOps <span class="soon-tag">SOON</span></span>
                             <span class="platform-badge soon"><img src="assets/jira.png" alt="Jira" class="badge-logo"> Jira <span class="soon-tag">SOON</span></span>
                             <span class="platform-badge soon"><img src="assets/confluence.png" alt="Confluence" class="badge-logo"> Confluence <span class="soon-tag">SOON</span></span>
                         </div>
-                        <p>Terraform state analysis (local, S3, Azure Blob, GCS) • HashiCorp Vault secrets engines, auth methods and policies.</p>
+                        <ul class="lane-list">
+                            <li>Terraform state analysis (local, S3, Azure Blob, GCS)</li>
+                            <li>HashiCorp Vault secrets engines, auth methods and policies</li>
+                            <li>GitHub repositories, branches, releases and languages, with org members, teams and collaborators</li>
+                        </ul>
                     </div>
                     <div class="platform-lane">
                         <div class="platform-lane-head">
@@ -184,7 +196,12 @@
                             <span class="platform-badge soon"><img src="assets/xcp-ng.png" alt="XCP-ng" class="badge-logo"> XCP-ng <span class="soon-tag">SOON</span></span>
                             <span class="platform-badge soon"><img src="assets/openstack.png" alt="OpenStack" class="badge-logo"> OpenStack <span class="soon-tag">SOON</span></span>
                         </div>
-                        <p>VMware vSphere with live performance metrics • Microsoft Hyper-V (standalone and failover clusters) • Proxmox VE • Nutanix AHV.</p>
+                        <ul class="lane-list">
+                            <li>VMware vSphere with live performance metrics</li>
+                            <li>Microsoft Hyper-V (standalone and failover clusters)</li>
+                            <li>Proxmox VE</li>
+                            <li>Nutanix AHV</li>
+                        </ul>
                     </div>
                 </div>
             </div>
