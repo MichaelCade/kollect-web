@@ -777,6 +777,10 @@ body {
     background: linear-gradient(135deg, #24292e, #1b1f23);
 }
 
+.platform-badge.azure-devops {
+    background: linear-gradient(135deg, #0078D4, #005A9E);
+}
+
 .platform-badge.cost {
     background: linear-gradient(135deg, #28A745, #1E7E34);
 }
