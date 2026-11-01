@@ -808,6 +808,15 @@ body {
     background: linear-gradient(135deg, #00b336, #007a24);
 }
 
+.platform-badge.postgres {
+    background: linear-gradient(135deg, #336791, #234a6b);
+}
+
+/* The PostgreSQL outline is tinted blue for the hero tiles; render it white on the badge. */
+.platform-badge.postgres .badge-logo {
+    filter: brightness(0) invert(1);
+}
+
 /* Muted badge for platforms that are on the roadmap but not yet shipped.
    A solid slate fill (not transparent) so the white monochrome logos stay
    visible; the whole badge is dimmed to read as "not yet available". */
