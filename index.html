@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kollect - Multi-Cloud & Infrastructure Discovery Tool</title>
-    <meta name="description" content="Kollect discovers and inventories your infrastructure across AWS, Azure, GCP, Kubernetes, OpenShift, Docker, VMware vSphere, Hyper-V, Proxmox, Nutanix, Terraform, Vault and more — with cost analysis, snapshot hunting and a built-in MCP server for AI-powered analysis.">
+    <meta name="description" content="Kollect discovers and inventories your infrastructure across AWS, Azure, GCP, Kubernetes, OpenShift, Docker, VMware vSphere, Hyper-V, Proxmox, Nutanix, Terraform, Vault, Databricks, Snowflake and more — with cost analysis, snapshot hunting and a built-in MCP server for AI-powered analysis.">
     <script>
         // Pre-paint theme: use the saved choice, else follow the OS preference.
         (function () {
@@ -46,7 +46,7 @@
             <div class="container">
                 <div class="hero-content">
                     <h1>Multi-Cloud & Infrastructure Discovery Made Simple</h1>
-                    <p class="hero-subtitle">Born from Kubernetes discovery, Kollect now inventories your entire estate — public clouds, containers, virtualization, and DevOps tooling — through one web interface, a single binary, and a built-in MCP server for AI-powered analysis.</p>
+                    <p class="hero-subtitle">Born from Kubernetes discovery, Kollect now inventories your entire estate — public clouds, containers, data clouds, virtualization, and DevOps tooling — through one web interface, a single binary, and a built-in MCP server for AI-powered analysis.</p>
                     <div class="hero-actions">
                         <a href="#download" class="btn btn-primary">
                             <i class="fas fa-download"></i>
@@ -89,6 +89,13 @@
                                 </div>
                             </div>
                             <div class="mini-lane">
+                                <div class="mini-lane-label">Data Clouds</div>
+                                <div class="mini-buttons">
+                                    <span class="mini-btn soon" title="Databricks (coming soon)"><img class="logo-mono" src="assets/databricks.png" alt="Databricks"></span>
+                                    <span class="mini-btn soon" title="Snowflake (coming soon)"><img class="logo-mono" src="assets/snowflake.png" alt="Snowflake"></span>
+                                </div>
+                            </div>
+                            <div class="mini-lane">
                                 <div class="mini-lane-label">DevOps</div>
                                 <div class="mini-buttons">
                                     <span class="mini-btn" title="HashiCorp Terraform"><img src="assets/terraform.svg" alt="Terraform"></span>
@@ -97,6 +104,7 @@
                                     <span class="mini-btn" title="Azure DevOps"><img src="assets/azure-devops.png" alt="Azure DevOps"></span>
                                     <span class="mini-btn soon" title="Atlassian Jira (coming soon)"><img src="assets/jira.png" alt="Jira"></span>
                                     <span class="mini-btn soon" title="Atlassian Confluence (coming soon)"><img src="assets/confluence.png" alt="Confluence"></span>
+                                    <span class="mini-btn soon" title="Microsoft Power Platform (coming soon)"><img class="logo-mono" src="assets/power.png" alt="Power Platform"></span>
                                 </div>
                             </div>
                             <div class="mini-lane">
@@ -117,6 +125,7 @@
                             <span class="mini-tool" title="Cost Explorer"><i class="fas fa-dollar-sign"></i></span>
                             <span class="mini-tool soon" title="Platform Mapper (coming soon)"><i class="fas fa-map"></i></span>
                             <span class="mini-tool" title="Export"><i class="fas fa-download"></i></span>
+                            <span class="mini-tool" title="Inventory history (PostgreSQL)"><img src="assets/postgres.png" alt="PostgreSQL"></span>
                             <span class="mini-tool" title="Scenario Builder CSV"><i class="fas fa-file-csv"></i></span>
                         </div>
                     </div>
@@ -128,12 +137,12 @@
         <section id="platforms" class="features">
             <div class="container">
                 <h2>Platform Coverage</h2>
-                <p class="section-note">Kollect groups integrations the way the app does — Cloud, Cloud-Native, DevOps, and Virtualization. Everything below is available today; dashed badges are on the roadmap.</p>
+                <p class="section-note">Kollect groups integrations the way the app does — Public Cloud, Cloud-Native, Data Clouds, DevOps, and Virtualization. Everything below is available today; dashed badges are on the roadmap.</p>
                 <div class="platform-lanes">
                     <div class="platform-lane">
                         <div class="platform-lane-head">
                             <span class="lane-icon"><i class="fas fa-cloud"></i></span>
-                            <h3>Cloud</h3>
+                            <h3>Public Cloud</h3>
                         </div>
                         <div class="platform-badges">
                             <span class="platform-badge aws"><img src="assets/aws.svg" alt="AWS" class="badge-logo"> AWS</span>
@@ -165,6 +174,20 @@
                     </div>
                     <div class="platform-lane">
                         <div class="platform-lane-head">
+                            <span class="lane-icon"><i class="fas fa-database"></i></span>
+                            <h3>Data Clouds</h3>
+                        </div>
+                        <div class="platform-badges">
+                            <span class="platform-badge soon"><img src="assets/databricks.png" alt="Databricks" class="badge-logo"> Databricks <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge soon"><img src="assets/snowflake.png" alt="Snowflake" class="badge-logo"> Snowflake <span class="soon-tag">SOON</span></span>
+                        </div>
+                        <ul class="lane-list">
+                            <li>Databricks - Workspaces, clusters, jobs, SQL warehouses and Unity Catalog</li>
+                            <li>Snowflake - Databases, schemas, tables, warehouses, users and roles</li>
+                        </ul>
+                    </div>
+                    <div class="platform-lane">
+                        <div class="platform-lane-head">
                             <span class="lane-icon"><i class="fas fa-tools"></i></span>
                             <h3>DevOps</h3>
                         </div>
@@ -175,6 +198,7 @@
                             <span class="platform-badge azure-devops"><img src="assets/azure-devops.png" alt="Azure DevOps" class="badge-logo"> Azure DevOps</span>
                             <span class="platform-badge soon"><img src="assets/jira.png" alt="Jira" class="badge-logo"> Jira <span class="soon-tag">SOON</span></span>
                             <span class="platform-badge soon"><img src="assets/confluence.png" alt="Confluence" class="badge-logo"> Confluence <span class="soon-tag">SOON</span></span>
+                            <span class="platform-badge soon"><img src="assets/power.png" alt="Power Platform" class="badge-logo"> Power Platform <span class="soon-tag">SOON</span></span>
                         </div>
                         <ul class="lane-list">
                             <li>Terraform state analysis (local, S3, Azure Blob, GCS)</li>

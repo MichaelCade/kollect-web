@@ -362,6 +362,13 @@ body {
     font-size: 14px;
 }
 
+/* Logo images (e.g. the PostgreSQL outline, pre-tinted to --primary-color). */
+.mini-tool img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
 .mini-tool.soon {
     opacity: 0.4;
 }
