@@ -73,6 +73,9 @@
 }
 
 html { color-scheme: light dark; }
+/* Follow the site toggle, not just the OS, so native controls match the page. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 * {
     margin: 0;
@@ -529,6 +532,7 @@ body {
     padding: 0.5rem 1rem;
     border: 2px solid var(--border-color);
     background: var(--bg-light);
+    color: var(--text-color);
     border-radius: 0.5rem;
     cursor: pointer;
     font-weight: 500;
